@@ -9,11 +9,11 @@
       "vite": "vite",
       "tsc:electron": "tsc -p tsconfig.electron.json",
       "tsc:watch:electron": "tsc -w -p tsconfig.electron.json",
-      "compile": "vue-tsc --noEmit && vite build && tsc -p tsconfig.electron.json",
+      "compile": "vite build && npm run tsc:electron",
       "electron": "wait-on tcp:3000 && cross-env IS_DEV=true electron .",
       "electron:pack": "electron-builder --dir",
       "electron:builder": "electron-builder ",
-      "test": "cross-env IS_TEST=true ts-mocha -p test.tsconfig.json test/tests.ts --verbose"
+      "test": "cross-env IS_TEST=true ts-mocha -p tsconfig.test.json test/tests.ts --verbose"
    },
    "dependencies": {
       "vue": "^3.2.25"
@@ -32,7 +32,6 @@
       "ts-mocha": "^9.0.2",
       "typescript": "^4.5.4",
       "vite": "^2.8.4",
-      "vue-tsc": "^0.29.8",
       "wait-on": "^6.0.1"
    },
    "author": "Nils Ramstöck",

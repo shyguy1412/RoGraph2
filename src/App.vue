@@ -1,20 +1,25 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-import InstructionBlock from './components/InstructionBlock.vue'
+import InstructionBlock from "./components/InstructionBlock.vue";
+import RoGraphCanvas from "./components/RoGraphCanvas.vue";
 </script>
 
 <template>
-   <InstructionBlock></InstructionBlock>
+  <RoGraphCanvas>
+    <InstructionBlock></InstructionBlock>
+  </RoGraphCanvas>
 </template>
 
 <style>
-#app {
-
+#app,
+html,
+body {
+  width: 100%;
+  height: 100%;
 }
 
 body {
-   margin: 0;
+  margin: 0;
 }
 </style>
