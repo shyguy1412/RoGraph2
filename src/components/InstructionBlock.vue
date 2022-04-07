@@ -1,15 +1,15 @@
 <template>
   <rg-instruction-block
-    draggable="true"
-    @drag="drag"
-    @dragstart="dragstart"
-    @dragover="dragover"
+    ref="el"
+    @mousedown.left="pickUpBlock"
     class="instruction-block-wrapper"
     :style="cssProps"
-  ></rg-instruction-block>
+  >
+  </rg-instruction-block>
 </template>
 
 <script lang="ts">
+import { InstructionBlockSVG } from "../svg/InstuctionBlockSVG";
 export default {
   name: "InstructionBlock",
   data: function () {
@@ -24,28 +24,41 @@ export default {
       },
     };
   },
+  mounted: function () {
+    for(let i = 0; i < 2000; i++){
+      new InstructionBlockSVG(this.$el);
+    }
+  },
   methods: {
-    drag: function (e: DragEvent) {
+    pickUpBlock: function (e: MouseEvent) {
+      console.log("PICKUP");
+
+      const canvas = document.querySelector("rg-canvas") as HTMLElement;
+
+      this.offset.x = e.offsetX + canvas.offsetLeft;
+      this.offset.y = e.offsetY + canvas.offsetTop;
+
+      canvas.appendChild(this.$el);
+
+      document.body.addEventListener("mousemove", this.followMouse);
+      document.addEventListener("mouseup", this.dropBlock);
+    },
+    dropBlock: function (e: MouseEvent) {
+      console.log("DROP");
+      document.body.removeEventListener("mousemove", this.followMouse);
+      document.removeEventListener("mouseup", this.dropBlock);
+
+      //delete block if outside on the left
+      if (this.pos.x < 0) this.deleteBlock();
+    },
+    followMouse: function (e: MouseEvent) {
       this.pos.x = e.clientX - this.offset.x;
       this.pos.y = e.clientY - this.offset.y;
     },
-    dragstart: function (e: DragEvent) {
-      const img = new Image();
-      img.src =
-        "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
-      //hide dragging ghost
-      e.dataTransfer!.setDragImage(img, 10, 10);
-      e.dataTransfer!.effectAllowed = "move";
-      this.offset.x = e.offsetX;
-      this.offset.y = e.offsetY;
+    deleteBlock: function () {
+      const el = this.$el as HTMLElement;
+      el.remove();
     },
-    dragover: function (e: DragEvent) {
-      e.preventDefault();
-      e.dataTransfer!.dropEffect = "move";
-    },
-  },
-  mounted: function () {
-    (window as any).pos = this.pos;
   },
   computed: {
     cssProps: function (): Object {
@@ -60,11 +73,13 @@ export default {
 
 <style lang="css" scoped>
 rg-instruction-block {
+  display: block;
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: max-content;
+  height: max-content;
   left: calc(var(--pos-x) * 1px);
   top: calc(var(--pos-y) * 1px);
-  background: blue;
+  /* border: 2px solid darkblue;
+  background: darkcyan; */
 }
 </style>

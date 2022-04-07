@@ -1,7 +1,7 @@
 <template>
-  <rg-canvas>
+  <rg-menu>
     <slot></slot>
-  </rg-canvas>
+  </rg-menu>
 </template>
 
 <script lang=ts>
@@ -16,12 +16,10 @@ export default {
 </script>
 
 <style scoped>
-rg-canvas {
+rg-menu {
   display: block;
-  position: relative;
   width: 100%;
   height: 100%;
-  background: lightgray;
-  border-left: 3px solid gray;
+  background: lightsalmon;
 }
 </style>

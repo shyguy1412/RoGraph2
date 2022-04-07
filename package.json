@@ -16,7 +16,8 @@
       "test": "cross-env IS_TEST=true ts-mocha -p tsconfig.test.json test/tests.ts --verbose"
    },
    "dependencies": {
-      "vue": "^3.2.25"
+      "vue": "^3.2.25",
+      "geckosvg": "^1.0.0"
    },
    "devDependencies": {
       "@types/chai": "^4.3.0",
