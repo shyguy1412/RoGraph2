@@ -2,12 +2,16 @@
 import InstructionBlock from "./components/InstructionBlock.vue";
 import RoGraphCanvas from "./components/RoGraphCanvas.vue";
 import RoGraphMenu from "./components/RoGraphMenu.vue";
+import RoGraphStack from "./components/RoGraphStack.vue";
 </script>
 
 <template>
   <RoGraphMenu></RoGraphMenu>
   <RoGraphCanvas>
+    <RoGraphStack>
     <InstructionBlock></InstructionBlock>
+    <InstructionBlock></InstructionBlock>
+    </RoGraphStack>
   </RoGraphCanvas>
 </template>
 

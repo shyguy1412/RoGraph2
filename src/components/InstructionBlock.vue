@@ -1,11 +1,5 @@
 <template>
-  <rg-instruction-block
-    ref="el"
-    @mousedown.left="pickUpBlock"
-    class="instruction-block-wrapper"
-    :style="cssProps"
-  >
-  </rg-instruction-block>
+  <rg-instruction-block :style="cssProps"></rg-instruction-block>
 </template>
 
 <script lang="ts">
@@ -13,59 +7,17 @@ import { InstructionBlockSVG } from "../svg/InstuctionBlockSVG";
 export default {
   name: "InstructionBlock",
   data: function () {
-    return {
-      pos: {
-        x: 0,
-        y: 0,
-      },
-      offset: {
-        x: 0,
-        y: 0,
-      },
-    };
+    return {};
   },
   mounted: function () {
-    for(let i = 0; i < 2000; i++){
-      new InstructionBlockSVG(this.$el);
-    }
+    this.$el.append(InstructionBlockSVG.create());
+    console.log('Istruction created');
+    
   },
-  methods: {
-    pickUpBlock: function (e: MouseEvent) {
-      console.log("PICKUP");
-
-      const canvas = document.querySelector("rg-canvas") as HTMLElement;
-
-      this.offset.x = e.offsetX + canvas.offsetLeft;
-      this.offset.y = e.offsetY + canvas.offsetTop;
-
-      canvas.appendChild(this.$el);
-
-      document.body.addEventListener("mousemove", this.followMouse);
-      document.addEventListener("mouseup", this.dropBlock);
-    },
-    dropBlock: function (e: MouseEvent) {
-      console.log("DROP");
-      document.body.removeEventListener("mousemove", this.followMouse);
-      document.removeEventListener("mouseup", this.dropBlock);
-
-      //delete block if outside on the left
-      if (this.pos.x < 0) this.deleteBlock();
-    },
-    followMouse: function (e: MouseEvent) {
-      this.pos.x = e.clientX - this.offset.x;
-      this.pos.y = e.clientY - this.offset.y;
-    },
-    deleteBlock: function () {
-      const el = this.$el as HTMLElement;
-      el.remove();
-    },
-  },
+  methods: {},
   computed: {
     cssProps: function (): Object {
-      return {
-        "--pos-x": this.pos.x,
-        "--pos-y": this.pos.y,
-      };
+      return {};
     },
   },
 };
@@ -74,12 +26,11 @@ export default {
 <style lang="css" scoped>
 rg-instruction-block {
   display: block;
-  position: absolute;
-  width: max-content;
-  height: max-content;
-  left: calc(var(--pos-x) * 1px);
-  top: calc(var(--pos-y) * 1px);
-  /* border: 2px solid darkblue;
-  background: darkcyan; */
+  position: relative;
+}
+
+
+rg-instruction-block:nth-child(n+2){
+    top: calc(var(--offset-y) * 1px)
 }
 </style>
