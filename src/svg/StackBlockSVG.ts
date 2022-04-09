@@ -3,10 +3,7 @@ import { applyAttributes, GeckoSVG, registerComponent } from "geckosvg";
 const fill = '#FF961E';
 const stroke = '#C86400';
 
-export class InstructionBlockSVG extends GeckoSVG {
-    static get tag() {
-        return 'rg-instruction-block-svg'
-    };
+export class StackBlockSVG extends GeckoSVG {
 
     init() {
         this.width = 150;
@@ -53,4 +50,4 @@ export class InstructionBlockSVG extends GeckoSVG {
     }
 }
 
-registerComponent(InstructionBlockSVG);
+registerComponent(StackBlockSVG);
