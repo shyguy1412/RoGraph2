@@ -1,10 +1,12 @@
+import { GeckoSVG } from 'geckosvg';
 import { StackBlockSVG } from '../svg/StackBlockSVG';
 import { registerComponent, RoGraphElement } from './RoGraphElement';
 
 export class RoGraphStackBlock extends RoGraphElement{
 
     init(): void {
-        this.append(StackBlockSVG.create());
+        const block = StackBlockSVG.create();
+        this.append(block);
     }
 }
 

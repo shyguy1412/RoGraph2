@@ -1,9 +1,5 @@
 rg-stackblock {
     display: block;
     position: relative;
-}
-
-
-rg-stackblock:nth-child(n+2) {
-    top: calc(var(--offset-y) * 1px)
+    line-height: 0;
 }

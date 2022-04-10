@@ -18,9 +18,12 @@ export class RoGraphStack extends RoGraphElement {
         return Number.parseInt(this.getAttribute('y')!);
     };
 
-    private attached = false;
-
+    attached = false;
+    static idc = 0;
+    n!:number;
     init(): void {
+        this.n = RoGraphStack.idc;
+        RoGraphStack.idc++;
         //sync position with style
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation, i) => {
@@ -37,30 +40,6 @@ export class RoGraphStack extends RoGraphElement {
             attributes: true
         });
 
-        //event listeners for mouse interaction
-        this.addEventListener('mousedown', (e) => {
-            switch (e.button) {
-                case 0:
-                    this.pickUpStack(e);
-                    break;
-                default:
-            }
-        })
-
-        //add global listener for mouse up. this prevents the stack getting stuck when the
-        //mousebutton is released while the cursor isnt over it
-        document.addEventListener('mouseup', (e) => {
-            switch (e.button) {
-                case 0:
-                    this.dropStack(e);
-                    break;
-                default:
-            }
-        })
-
-        document.addEventListener("mousemove", (e) => {
-            this.followMouse(e);
-        });
 
         //initilize position and offset
         this.x = 0;
@@ -75,66 +54,107 @@ export class RoGraphStack extends RoGraphElement {
 
     pickUpStack(e: MouseEvent) {
         const canvas = document.querySelector("rg-canvas") as HTMLElement;
-        
         //seperate stack if clicked element isnt head of stack
         if (!e.composedPath().includes(this.firstElementChild!)) {
-            const element = e.composedPath().find((element) => element instanceof RoGraphStackBlock)!as Element;
-            const index = Array.from(element.parentNode!.children).indexOf(element);
-            const newStack = this.separateStackAt(index);
-            newStack.offset.x = e.offsetX + canvas.offsetLeft;
-            // newStack.offset.y = e.offsetY + canvas.offsetTop;
+            //TODO: bad, doesnt scale for other blocktypes
+            //SOLUTION: switchcase to determin blocktype, handle each accordingly
+            const element = e.composedPath().find((element) => element instanceof RoGraphStackBlock)! as RoGraphElement;
+            const bounds = element.getBoundingClientRect();
+            let newStack!: RoGraphStack;
+            switch (element.constructor) {
+                case RoGraphStackBlock:
+                    newStack = this.separateAtStackBlock(element);
+                    break;
+
+                default:
+                    break;
+            }
+
+            newStack.x = bounds.x - canvas.getBoundingClientRect().left;
+            newStack.y = bounds.y - canvas.getBoundingClientRect().top;
+            //-3 for weird offset reasons
+            newStack.offset.x = e.clientX - bounds.x + 3;
+            newStack.offset.y = e.clientY - bounds.y;
             newStack.attach();
+            //call followMouse once to set right position
+            newStack.followMouse(e);
+
             return;
         }
 
+
         this.attached = true;
 
-        this.offset.x = e.offsetX + canvas.offsetLeft;
-        this.offset.y = e.offsetY + canvas.offsetTop;
+        const bounds = this.getBoundingClientRect();
+        this.offset.x = e.clientX - bounds.x;
+        this.offset.y = e.clientY - bounds.y;
 
         canvas.appendChild(this);
-        document.addEventListener("mousemove", (e) => {
-            this.followMouse(e);
-        });
 
     }
 
     dropStack(e: MouseEvent) {
         this.attached = false;
-        document.removeEventListener("mousemove", (e) => {
-            this.followMouse(e);
-        });
-
         //delete stack if outside on the left
         if (this.x < 0) this.deleteStack();
     }
 
     followMouse(e: MouseEvent) {
         if (!this.attached) return;
-        this.x = e.clientX - this.offset.x;
-        this.y = e.clientY - this.offset.y;
+
+        const canvas = document.querySelector('rg-canvas')!.getBoundingClientRect();
+        this.x = e.clientX - this.offset.x - canvas.left;
+        this.y = e.clientY - this.offset.y - canvas.top;
     }
 
     deleteStack() {
         this.remove();
     }
 
-    separateStackAt(at: number): RoGraphStack {
+    separateAtStackBlock(at: RoGraphStackBlock) {
+        const index = Array.from(at.parentNode!.children).indexOf(at);
+        const newStack = this.separateAtIndex(index);
+
+        return newStack;
+    }
+
+    separateAtIndex(at: number): RoGraphStack {
         const newStack = RoGraphStack.create() as RoGraphStack;
-        const blocks: Node[] = [];
+        const blocks: ChildNode[] = [];
         this.childNodes.forEach((node, index) => {
-            console.log(at, index);
-            
             if (index >= at) {
-                node.remove();
                 blocks.push(node)
             };
         });
-        console.log(blocks);
-        
+        blocks.forEach((block) => block.remove());
         newStack.append(...blocks);
         this.parentElement?.append(newStack);
         return newStack
+    }
+
+    checkInsertion(stack: RoGraphStack) {
+        //check for top of stacks children
+        //if abs(stack.pos - child.pos) < 10
+        const bounds = stack.getBoundingClientRect();
+        const children = [...this.querySelectorAll<RoGraphElement>('*')]
+            .filter((el) => el instanceof RoGraphElement);
+        children.forEach((child) => {
+            const childBounds = child.getBoundingClientRect();
+            const distance = Math.sqrt(
+                ((childBounds.x - bounds.x) * (childBounds.x - bounds.x)) +
+                (childBounds.y - bounds.y) * (childBounds.y - bounds.y)
+            );
+
+            const childSVG = child.querySelector<SVGRectElement>('polygon')!;
+            if(distance < 10){
+                childSVG.style.fill = 'blue'
+            } else {
+                childSVG.style.fill = 'red'
+            }
+            
+        })
+
+        //check for bottom of stacks
     }
 
     /**

@@ -1,9 +1,11 @@
-interface RoGraphElementConstructor extends CustomElementConstructor {
+import { RoGraphStack } from "./RoGraphStack";
+
+interface RoGraphElementConstructor {
     tag: string,
+    new(): RoGraphElement
 };
 
 export class RoGraphElement extends HTMLElement {
-
     static get tag() {
         return this.name.toLowerCase().replace('rograph', 'rg-');
     }
@@ -17,8 +19,10 @@ export class RoGraphElement extends HTMLElement {
     init() { };
 
     //creates an instance of the element
-    static create(): RoGraphElement {
-        const el = document.createElement(this.tag) as RoGraphElement;
+    static create<T extends RoGraphElement>(type?: new () => T): T {
+        const el = document.createElement(
+            type ? (type as unknown as typeof RoGraphElement).tag : this.tag
+        ) as T;
         el.init();
         return el;
     }

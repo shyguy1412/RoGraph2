@@ -2,37 +2,40 @@ import { applyAttributes, GeckoSVG, registerComponent } from "geckosvg";
 
 const fill = '#FF961E';
 const stroke = '#C86400';
+const plugWidth = 18;
+const plugHeight = 8;
+const plugPos = 15;
+const strokeWidth = 3
+
+let num = 0;
 
 export class StackBlockSVG extends GeckoSVG {
 
+
     init() {
+        num++;
         this.width = 150;
         this.height = 40;
 
-        const plugWidth = 15;
-        const plugHeight = 5;
-        const plugPos = 10;
-        const strokeWidth = 3;
-
         const shape = [
-            [strokeWidth, strokeWidth + plugHeight],
+            [0, 0],
 
             //plug
-            [strokeWidth + plugPos, strokeWidth + plugHeight],
-            [strokeWidth + plugPos, strokeWidth],
-            [strokeWidth + plugPos + plugWidth, strokeWidth],
-            [strokeWidth + plugPos + plugWidth, strokeWidth + plugHeight],
+            [plugPos, 0],
+            [plugPos, -plugHeight],
+            [plugPos + plugWidth, -plugHeight],
+            [plugPos + plugWidth, 0],
 
-            [this.width - strokeWidth, strokeWidth + plugHeight],
-            [this.width - strokeWidth, this.height - strokeWidth],
+            [this.width, 0],
+            [this.width, this.height],
 
             //socket
-            [strokeWidth + plugPos + plugWidth, this.height - strokeWidth],
-            [strokeWidth + plugPos + plugWidth, this.height - strokeWidth - plugHeight],
-            [strokeWidth + plugPos, this.height - strokeWidth - plugHeight],
-            [strokeWidth + plugPos, this.height - strokeWidth],
+            [plugPos + plugWidth, this.height],
+            [plugPos + plugWidth, this.height - plugHeight],
+            [plugPos, this.height - plugHeight],
+            [plugPos, this.height],
 
-            [strokeWidth, this.height - strokeWidth],
+            [0, this.height],
         ]
 
 
@@ -47,6 +50,9 @@ export class StackBlockSVG extends GeckoSVG {
             stroke,
             "stroke-width": strokeWidth + 'px',
         });
+
+        const text = this.text(num + '', 10, 25);
+
     }
 }
 
