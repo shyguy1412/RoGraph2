@@ -1,4 +1,4 @@
-import { applyAttributes, GeckoSVG, registerComponent } from "geckosvg";
+import { GeckoSVG, registerComponent } from "geckosvg";
 
 const fill = '#FF961E';
 const stroke = '#C86400';
@@ -39,19 +39,12 @@ export class StackBlockSVG extends GeckoSVG {
         ]
 
 
-        const polygon = this.polygon(shape.map((value) => {
-            return {
-                x: value[0],
-                y: value[1],
-            }
-        }));
-        applyAttributes(polygon, {
-            fill,
-            stroke,
-            "stroke-width": strokeWidth + 'px',
-        });
+        this.polygon(shape.map((value) => ({x: value[0],y: value[1]})))
+        .fill(fill)
+        .stroke(stroke)
+        .strokeWidth(strokeWidth);
 
-        const text = this.text(num + '', 10, 25);
+        this.text(num + '', 10, 25);
 
     }
 }

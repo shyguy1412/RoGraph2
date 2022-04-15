@@ -21,7 +21,7 @@ export class RoGraphCanvas extends RoGraphElement {
         document.addEventListener('mouseup', (e) => {
             const stacks = this.querySelectorAll('rg-stack') as NodeListOf<RoGraphStack>;
             stacks.forEach((stack) => {
-                if (!stack) return;
+                if (!stack || !stack.attached) return;
                 switch (e.button) {
                     case 0:
                         stack.dropStack(e);
@@ -41,7 +41,7 @@ export class RoGraphCanvas extends RoGraphElement {
             if (stack)
             stacks.forEach((otherStack) => {
                     if (stack == otherStack) return;
-                    otherStack.checkInsertion(stack);
+                    stack.checkInsertion(otherStack);
                 })
         });
 

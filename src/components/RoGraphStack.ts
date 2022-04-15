@@ -20,7 +20,7 @@ export class RoGraphStack extends RoGraphElement {
 
     attached = false;
     static idc = 0;
-    n!:number;
+    n!: number;
     init(): void {
         this.n = RoGraphStack.idc;
         RoGraphStack.idc++;
@@ -95,6 +95,18 @@ export class RoGraphStack extends RoGraphElement {
 
     dropStack(e: MouseEvent) {
         this.attached = false;
+
+        //get all stacks
+        const stacks = [...this.parentElement!.querySelectorAll('rg-stack')] as RoGraphStack[];
+
+        for (const stack of stacks) {
+            const insertion = this.checkInsertion(stack);
+            if (insertion) {
+                this.insertIntoStack(insertion);
+                break;
+            }
+        }
+
         //delete stack if outside on the left
         if (this.x < 0) this.deleteStack();
     }
@@ -132,29 +144,68 @@ export class RoGraphStack extends RoGraphElement {
         return newStack
     }
 
+    insertIntoStack(insertion: { el: RoGraphElement, before: boolean }) {
+        console.log(insertion);
+        //get all blocks as array
+        const children = [...this.querySelectorAll<RoGraphElement>('rg-stack>*')];
+        //if before, insert all children before el
+        if (insertion.before) {
+            //get bottom of stack
+            const stack = insertion.el.parentElement! as RoGraphStack;
+            const stackBottomBefore = stack.getBoundingClientRect().bottom;
+            children.forEach(child => {
+                insertion.el.before(child);
+            });
+            const stackBottomAfter = stack.getBoundingClientRect().bottom;
+            console.log(stackBottomBefore, stackBottomAfter, stackBottomBefore - stackBottomAfter);
+            
+            stack.y -= stackBottomAfter - stackBottomBefore;
+            console.log(stack);
+            
+        } else {
+            children.reverse();
+            children.forEach(child => {
+                insertion.el.after(child);
+            });
+        }
+        this.remove();
+    }
+
     checkInsertion(stack: RoGraphStack) {
         //check for top of stacks children
         //if abs(stack.pos - child.pos) < 10
-        const bounds = stack.getBoundingClientRect();
-        const children = [...this.querySelectorAll<RoGraphElement>('*')]
-            .filter((el) => el instanceof RoGraphElement);
+        const bounds = this.getBoundingClientRect();
+        const children = [...stack.querySelectorAll<RoGraphElement>('rg-stack>*')];
+        let validInsertion: { el: RoGraphElement, before: boolean } | null = null;
         children.forEach((child) => {
+            function dist(x1: number, y1: number, x2: number, y2: number): number {
+                return Math.sqrt(
+                    ((x1 - x2) * (x1 - x2)) +
+                    (y1 - y2) * (y1 - y2)
+                );;
+            }
             const childBounds = child.getBoundingClientRect();
-            const distance = Math.sqrt(
-                ((childBounds.x - bounds.x) * (childBounds.x - bounds.x)) +
-                (childBounds.y - bounds.y) * (childBounds.y - bounds.y)
-            );
+            const distanceTop = dist(childBounds.left, childBounds.top, bounds.left, bounds.bottom)
+            const distanceBottom = dist(childBounds.left, childBounds.bottom, bounds.x, bounds.y)
 
-            const childSVG = child.querySelector<SVGRectElement>('polygon')!;
-            if(distance < 10){
+            const childSVG = child.querySelector('polygon')!;
+            if (distanceBottom < 10) {
                 childSVG.style.fill = 'blue'
+                validInsertion = {
+                    el: child,
+                    before: false
+                }
+            } else if (distanceTop < 10 && child.parentElement?.firstChild == child) {
+                childSVG.style.fill = 'green'
+                validInsertion = {
+                    el: child,
+                    before: true
+                }
             } else {
                 childSVG.style.fill = 'red'
             }
-            
         })
-
-        //check for bottom of stacks
+        return validInsertion;
     }
 
     /**
