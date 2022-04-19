@@ -3,9 +3,11 @@ import { GeckoSVG, registerComponent } from "geckosvg";
 const fill = '#FF961E';
 const stroke = '#C86400';
 const plugWidth = 18;
-const plugHeight = 8;
+const plugHeight = 5;
 const plugPos = 15;
 const strokeWidth = 3
+const width = 150;
+const height = 40;
 
 let num = 0;
 
@@ -14,16 +16,16 @@ export class StackBlockSVG extends GeckoSVG {
 
     init() {
         num++;
-        this.width = 150;
-        this.height = 40;
+        this.width = width;
+        this.height = height;
 
         const shape = [
             [0, 0],
 
             //plug
             [plugPos, 0],
-            [plugPos, -plugHeight],
-            [plugPos + plugWidth, -plugHeight],
+            [plugPos, +plugHeight],
+            [plugPos + plugWidth, +plugHeight],
             [plugPos + plugWidth, 0],
 
             [this.width, 0],
@@ -31,8 +33,8 @@ export class StackBlockSVG extends GeckoSVG {
 
             //socket
             [plugPos + plugWidth, this.height],
-            [plugPos + plugWidth, this.height - plugHeight],
-            [plugPos, this.height - plugHeight],
+            [plugPos + plugWidth, this.height + plugHeight],
+            [plugPos, this.height + plugHeight],
             [plugPos, this.height],
 
             [0, this.height],

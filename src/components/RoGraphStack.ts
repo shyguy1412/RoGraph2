@@ -1,9 +1,19 @@
+import { RoGraphBlock } from './RoGraphBlock';
 import { registerComponent, RoGraphElement } from './RoGraphElement';
-import { RoGraphStackBlock } from './RoGraphStackBlock';
 
+/**
+ * A stack of RoGraph blocks. Manages movement and insertion of blocks into other stacks.
+ * A block always needs to be inside a stack
+ */
 export class RoGraphStack extends RoGraphElement {
+    //Mouse offset to stack origin at the start of drag
     offset!: { x: number; y: number; };
+    private observer!: MutationObserver;
 
+    //pixel value to determine when a block is close enough to be inserted
+    static get connectionThreshold() { return 25 };
+
+    // Getters and Setters for position
     set x(x: number) {
         this.setAttribute('x', x.toString());
     }
@@ -18,14 +28,13 @@ export class RoGraphStack extends RoGraphElement {
         return Number.parseInt(this.getAttribute('y')!);
     };
 
+    //if block is currently attached to the mouse
     attached = false;
-    static idc = 0;
-    n!: number;
+
+    //Initilise new stack
     init(): void {
-        this.n = RoGraphStack.idc;
-        RoGraphStack.idc++;
         //sync position with style
-        const observer = new MutationObserver((mutations) => {
+        this.observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation, i) => {
                 if (mutation.type != 'attributes') return;
                 const element = mutation.target as HTMLElement;
@@ -36,7 +45,7 @@ export class RoGraphStack extends RoGraphElement {
             });
         });
 
-        observer.observe(this, {
+        this.observer.observe(this, {
             attributes: true
         });
 
@@ -44,53 +53,19 @@ export class RoGraphStack extends RoGraphElement {
         //initilize position and offset
         this.x = 0;
         this.y = 0;
-
-
         this.offset = {
             x: 0,
             y: 0
         }
     }
 
+    //picks up a stack
     pickUpStack(e: MouseEvent) {
+        this.attach(e);
+
+        //stacks should be ordered by interaction
         const canvas = document.querySelector("rg-canvas") as HTMLElement;
-        //seperate stack if clicked element isnt head of stack
-        if (!e.composedPath().includes(this.firstElementChild!)) {
-            //TODO: bad, doesnt scale for other blocktypes
-            //SOLUTION: switchcase to determin blocktype, handle each accordingly
-            const element = e.composedPath().find((element) => element instanceof RoGraphStackBlock)! as RoGraphElement;
-            const bounds = element.getBoundingClientRect();
-            let newStack!: RoGraphStack;
-            switch (element.constructor) {
-                case RoGraphStackBlock:
-                    newStack = this.separateAtStackBlock(element);
-                    break;
-
-                default:
-                    break;
-            }
-
-            newStack.x = bounds.x - canvas.getBoundingClientRect().left;
-            newStack.y = bounds.y - canvas.getBoundingClientRect().top;
-            //-3 for weird offset reasons
-            newStack.offset.x = e.clientX - bounds.x + 3;
-            newStack.offset.y = e.clientY - bounds.y;
-            newStack.attach();
-            //call followMouse once to set right position
-            newStack.followMouse(e);
-
-            return;
-        }
-
-
-        this.attached = true;
-
-        const bounds = this.getBoundingClientRect();
-        this.offset.x = e.clientX - bounds.x;
-        this.offset.y = e.clientY - bounds.y;
-
         canvas.appendChild(this);
-
     }
 
     dropStack(e: MouseEvent) {
@@ -99,11 +74,15 @@ export class RoGraphStack extends RoGraphElement {
         //get all stacks
         const stacks = [...this.parentElement!.querySelectorAll('rg-stack')] as RoGraphStack[];
 
+        //check for each stack if it can be connected to a block
         for (const stack of stacks) {
-            const insertion = this.checkInsertion(stack);
-            if (insertion) {
-                this.insertIntoStack(insertion);
-                break;
+            if (stack == this) continue;
+            const children = [...this.querySelectorAll<RoGraphBlock>('rg-stack>*')];
+            for (const child of children) {
+                if (child.canConnectStack(this)) {
+                    child.connectStack(this);
+                    break;
+                }
             }
         }
 
@@ -115,113 +94,31 @@ export class RoGraphStack extends RoGraphElement {
         if (!this.attached) return;
 
         const canvas = document.querySelector('rg-canvas')!.getBoundingClientRect();
-        this.x = e.clientX - this.offset.x - canvas.left;
-        this.y = e.clientY - this.offset.y - canvas.top;
+        this.x = e.clientX - this.offset.x - canvas.x;
+        this.y = e.clientY - this.offset.y - canvas.y;
     }
-
-    deleteStack() {
-        this.remove();
-    }
-
-    separateAtStackBlock(at: RoGraphStackBlock) {
-        const index = Array.from(at.parentNode!.children).indexOf(at);
-        const newStack = this.separateAtIndex(index);
-
-        return newStack;
-    }
-
-    separateAtIndex(at: number): RoGraphStack {
-        const newStack = RoGraphStack.create() as RoGraphStack;
-        const blocks: ChildNode[] = [];
-        this.childNodes.forEach((node, index) => {
-            if (index >= at) {
-                blocks.push(node)
-            };
-        });
-        blocks.forEach((block) => block.remove());
-        newStack.append(...blocks);
-        this.parentElement?.append(newStack);
-        return newStack
-    }
-
-    insertIntoStack(insertion: { el: RoGraphElement, before: boolean }) {
-        console.log(insertion);
-        //get all blocks as array
-        const children = [...this.querySelectorAll<RoGraphElement>('rg-stack>*')];
-        //if before, insert all children before el
-        if (insertion.before) {
-            //get bottom of stack
-            const stack = insertion.el.parentElement! as RoGraphStack;
-            const stackBottomBefore = stack.getBoundingClientRect().bottom;
-            children.forEach(child => {
-                insertion.el.before(child);
-            });
-            const stackBottomAfter = stack.getBoundingClientRect().bottom;
-            console.log(stackBottomBefore, stackBottomAfter, stackBottomBefore - stackBottomAfter);
-            
-            stack.y -= stackBottomAfter - stackBottomBefore;
-            console.log(stack);
-            
-        } else {
-            children.reverse();
-            children.forEach(child => {
-                insertion.el.after(child);
-            });
-        }
-        this.remove();
-    }
-
-    checkInsertion(stack: RoGraphStack) {
-        //check for top of stacks children
-        //if abs(stack.pos - child.pos) < 10
-        const bounds = this.getBoundingClientRect();
-        const children = [...stack.querySelectorAll<RoGraphElement>('rg-stack>*')];
-        let validInsertion: { el: RoGraphElement, before: boolean } | null = null;
-        children.forEach((child) => {
-            function dist(x1: number, y1: number, x2: number, y2: number): number {
-                return Math.sqrt(
-                    ((x1 - x2) * (x1 - x2)) +
-                    (y1 - y2) * (y1 - y2)
-                );;
-            }
-            const childBounds = child.getBoundingClientRect();
-            const distanceTop = dist(childBounds.left, childBounds.top, bounds.left, bounds.bottom)
-            const distanceBottom = dist(childBounds.left, childBounds.bottom, bounds.x, bounds.y)
-
-            const childSVG = child.querySelector('polygon')!;
-            if (distanceBottom < 10) {
-                childSVG.style.fill = 'blue'
-                validInsertion = {
-                    el: child,
-                    before: false
-                }
-            } else if (distanceTop < 10 && child.parentElement?.firstChild == child) {
-                childSVG.style.fill = 'green'
-                validInsertion = {
-                    el: child,
-                    before: true
-                }
-            } else {
-                childSVG.style.fill = 'red'
-            }
-        })
-        return validInsertion;
-    }
-
+    
     /**
      * forces the stack to attach to mouse
      */
-    attach() {
+    attach(e: MouseEvent) {
+        const canvas = document.querySelector("rg-canvas")!.getBoundingClientRect();
+        this.offset.x = e.clientX - this.x - canvas.x;
+        this.offset.y = e.clientY - this.y - canvas.y;
         this.attached = true;
     }
-
+    
     /**
      * forces the stack to detach from mouse
      */
     detach() {
         this.attached = false;
     }
-
+    
+    deleteStack() {
+        this.remove();
+        this.observer.disconnect();
+    }
 }
 
 registerComponent(RoGraphStack);

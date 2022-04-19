@@ -3,6 +3,7 @@ import { RoGraphElement } from './components/RoGraphElement';
 import {RoGraphMenu} from './components/RoGraphMenu';
 import { RoGraphStack } from './components/RoGraphStack';
 import { RoGraphStackBlock } from './components/RoGraphStackBlock';
+import { RoGraphWrapBlock } from './components/RoGraphWrapBlock';
 
 //get reference to app root
 const app = document.querySelector('#app')!;
@@ -29,9 +30,8 @@ const stack2 = RoGraphStack.create<RoGraphStack>();
 
 canvas.append(stack2);
 
-stack2.append(RoGraphStackBlock.create());
-stack2.append(RoGraphStackBlock.create());
-stack2.append(RoGraphStackBlock.create());
+stack2.append(RoGraphWrapBlock.create());
+stack2.append(RoGraphWrapBlock.create());
 
 stack2.x = 150;
 stack2.y = 300;
