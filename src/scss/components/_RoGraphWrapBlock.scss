@@ -4,7 +4,7 @@ rg-wrapblock {
     line-height: 0;
 }
 
-rg-wrapblockcontent {
+rg-wrapblock > .wrap-content{
     left: 20px;
     top: 35px;
     display: block;

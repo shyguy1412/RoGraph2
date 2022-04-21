@@ -9,22 +9,14 @@ export class RoGraphCanvas extends RoGraphElement {
             if (e.button) return;
             //find clicked element
             const target = e.composedPath().find(el => el instanceof RoGraphElement) as RoGraphElement;
-            console.log(target);
-
+            if(target == this) return;
             //if clicked element is the head of a stack, pick up the stack
             if (!target.previousSibling && target.parentElement instanceof RoGraphStack)
                 target.parentElement.pickUpStack(e);
 
             //else, get element and all it's siblings to create new stack
             else this.createNewStack(target).attach(e);
-            // const stack = e.composedPath().find((element) => element instanceof RoGraphStack)! as RoGraphStack;
-            // if (!stack) return;
-            // switch (e.button) {
-            //     case 0:
-            //         stack.pickUpStack(e);
-            //         break;
-            //     default:
-            // }
+
         })
 
         //add global listener for mouse up. this prevents the stack getting stuck when the
@@ -44,7 +36,7 @@ export class RoGraphCanvas extends RoGraphElement {
         })
 
         document.addEventListener("mousemove", (e) => {
-            const stacks = this.querySelectorAll('rg-stack') as NodeListOf<RoGraphStack>;
+            const stacks = this.querySelectorAll<RoGraphStack>('rg-stack');
             stacks.forEach((stack) => stack.followMouse(e));
         });
 

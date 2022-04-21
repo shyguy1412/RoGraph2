@@ -1,4 +1,4 @@
-import { RoGraphBlock } from './RoGraphBlock';
+import { RoGraphBlock } from './blocks/RoGraphBlock';
 import { registerComponent, RoGraphElement } from './RoGraphElement';
 
 /**
@@ -43,10 +43,12 @@ export class RoGraphStack extends RoGraphElement {
                 if (mutation.attributeName == 'y')
                     element.style.setProperty('--pos-y', element.getAttribute('y'));
             });
+            if(this.childElementCount == 0)this.remove();
         });
 
         this.observer.observe(this, {
-            attributes: true
+            attributes: true,
+            childList: true
         });
 
 
@@ -71,20 +73,18 @@ export class RoGraphStack extends RoGraphElement {
     dropStack(e: MouseEvent) {
         this.attached = false;
 
-        //get all stacks
-        const stacks = [...this.parentElement!.querySelectorAll('rg-stack')] as RoGraphStack[];
-
+        //get all blocks
+        const blocks = [...this.parentElement!.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')];
+        console.log(blocks);
+        
         //check for each stack if it can be connected to a block
-        for (const stack of stacks) {
-            if (stack == this) continue;
-            const children = [...this.querySelectorAll<RoGraphBlock>('rg-stack>*')];
-            for (const child of children) {
-                if (child.canConnectStack(this)) {
-                    child.connectStack(this);
-                    break;
+            for (const block of blocks) {
+                if([...this.children].includes(block)){
+                    console.log('SKIPPED OWN CHILD');
+                    continue;
                 }
+                block.tryConnectStack(this);
             }
-        }
 
         //delete stack if outside on the left
         if (this.x < 0) this.deleteStack();
