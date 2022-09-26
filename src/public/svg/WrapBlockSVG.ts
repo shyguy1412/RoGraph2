@@ -1,6 +1,5 @@
 import { GeckoSVG, registerComponent } from "geckosvg";
 import { GeckoSVGPolygonElement } from "geckosvg/dist/elements/renderable/shape/GeckoSVGPolygonElement";
-import { RoGraphStack } from "../components/RoGraphStack";
 
 const fill = '#e6b400';
 const stroke = '#be8200';
@@ -60,7 +59,7 @@ export class WrapBlockSVG extends GeckoSVG {
 
     }
 
-    init() {
+    draw() {
         num++;
 
         this.shape = this.polygon([{ x: 0, y: 0 }])

@@ -1,6 +1,5 @@
-import { dist } from "../../assets/functions";
+import { GeckoSVG } from "geckosvg";
 import { RoGraphElement } from "../RoGraphElement";
-import { RoGraphStack } from "../RoGraphStack";
 
 export class RoGraphBlockSocket {
     constructor(parent: RoGraphBlock, pos: { x: number, y: number }) {
@@ -12,54 +11,25 @@ export class RoGraphBlockPlug {
     constructor(parent: RoGraphBlock, pos: { x: number, y: number }) {
 
     }
-
-    canConnect(socket:RoGraphBlockSocket){
-        return false;
-    }
 }
 
-export class RoGraphBlock extends RoGraphElement {
-    socket: RoGraphBlockSocket;
-    plugs: RoGraphBlockPlug[];
+export abstract class RoGraphBlock extends RoGraphElement {
+    private socket: RoGraphBlockSocket | null;
+    private plugs: RoGraphBlockPlug[] | null;
+    private svg: GeckoSVG;
 
     constructor() {
         super();
-        this.socket = new RoGraphBlockSocket(this, this.getBoundingClientRect());
-        this.plugs = [new RoGraphBlockPlug(this, {
-            x: this.getBoundingClientRect().left,
-            y: this.getBoundingClientRect().bottom,
-        })]
+        this.socket = this.defineSocket();
+        this.plugs = this.definePlugs();
+        this.svg = this.defineSVG();
 
+        const shadow = this.attachShadow({mode: 'closed'});
+        shadow.appendChild(this.svg);
     }
 
-    canConnectStack(stack: RoGraphStack): boolean {
-        let result = false;
-        const sockets = [...stack.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')].map((value) => value.socket);
-        
-        outer: for(const plug of this.plugs){
-            for(const socket of sockets){
-                if(plug.canConnect(socket)){
-                    result = true;
-                    break outer;
-                }
-            }
-        }
+    abstract definePlugs():typeof this.plugs;
+    abstract defineSocket():typeof this.socket;
+    abstract defineSVG():GeckoSVG;
 
-        return result;
-    }
-
-
-    connectStack(stack: RoGraphStack): boolean {
-        const sockets = [...stack.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')].map((value) => value.socket);
-        
-        outer: for(const plug of this.plugs){
-            for(const socket of sockets){
-                if(plug.canConnect(socket)){
-                    //do the thingy
-                    break outer;
-                }
-            }
-        }
-        return false;
-    }
 }

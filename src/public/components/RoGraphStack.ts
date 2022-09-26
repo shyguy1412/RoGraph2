@@ -83,7 +83,6 @@ export class RoGraphStack extends RoGraphElement {
                     console.log('SKIPPED OWN CHILD');
                     continue;
                 }
-                if(block.canConnectStack(this))block.connectStack(this);
             }
 
         //delete stack if outside on the left

@@ -1,4 +1,5 @@
 import { GeckoSVG, registerComponent } from "geckosvg";
+import { RoGraphSVG } from "./RoGraphSVG";
 
 const fill = '#FF961E';
 const stroke = '#C86400';
@@ -11,10 +12,9 @@ const height = 40;
 
 let num = 0;
 
-export class StackBlockSVG extends GeckoSVG {
+export class StackBlockSVG extends RoGraphSVG {
 
-
-    init() {
+    draw() {
         num++;
         this.width = width;
         this.height = height;

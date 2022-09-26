@@ -25,15 +25,15 @@ stack.append(RoGraphStackBlock.create());
 stack.x = 150;
 stack.y = 100;
 
-const stack2 = RoGraphStack.create<RoGraphStack>();
+// const stack2 = RoGraphStack.create<RoGraphStack>();
 
-canvas.append(stack2);
+// canvas.append(stack2);
 
-stack2.append(RoGraphWrapBlock.create());
 // stack2.append(RoGraphWrapBlock.create());
+// // stack2.append(RoGraphWrapBlock.create());
 
-stack2.x = 150;
-stack2.y = 300;
+// stack2.x = 150;
+// stack2.y = 300;
 
 
 console.log('new start');
