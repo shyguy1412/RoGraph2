@@ -1,4 +1,4 @@
-import { GeckoSVG, registerComponent } from "geckosvg";
+import { registerComponent } from "geckosvg";
 import { RoGraphSVG } from "./RoGraphSVG";
 
 const fill = '#FF961E';

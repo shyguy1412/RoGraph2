@@ -1,5 +1,5 @@
 import { GeckoSVG } from "geckosvg";
-import { RoGraphElement } from "../RoGraphElement";
+import { RoGraphElement } from "@components/RoGraphElement";
 
 export class RoGraphBlockSocket {
     constructor(parent: RoGraphBlock, pos: { x: number, y: number }) {

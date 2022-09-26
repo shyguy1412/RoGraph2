@@ -1,6 +1,6 @@
-import { RoGraphBlock, RoGraphBlockPlug, RoGraphBlockSocket } from './RoGraphBlock';
-import { registerComponent } from '../RoGraphElement';
-import { GeckoSVG } from 'geckosvg';
+import { registerComponent } from "@components/RoGraphElement";
+import { GeckoSVG } from "geckosvg";
+import { RoGraphBlock, RoGraphBlockPlug, RoGraphBlockSocket } from "./RoGraphBlock";
 
 export class RoGraphWrapBlock extends RoGraphBlock {
 

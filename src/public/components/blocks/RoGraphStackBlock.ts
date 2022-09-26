@@ -1,7 +1,7 @@
+import { registerComponent } from '@components/RoGraphElement';
+import { StackBlockSVG } from '@svg/StackBlockSVG';
 import { GeckoSVG } from 'geckosvg';
 import { RoGraphBlock, RoGraphBlockPlug, RoGraphBlockSocket } from './RoGraphBlock';
-import { registerComponent } from '../RoGraphElement';
-import { StackBlockSVG } from '../../svg/StackBlockSVG';
 
 export class RoGraphStackBlock extends RoGraphBlock {
 

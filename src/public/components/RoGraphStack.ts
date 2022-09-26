@@ -1,4 +1,4 @@
-import { RoGraphBlock } from './blocks/RoGraphBlock';
+import { RoGraphBlock } from '@blocks/RoGraphBlock';
 import { registerComponent, RoGraphElement } from './RoGraphElement';
 
 /**

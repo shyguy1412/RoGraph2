@@ -1,5 +1,6 @@
-import { GeckoSVG, registerComponent } from "geckosvg";
+import { registerComponent } from "geckosvg";
 import { GeckoSVGPolygonElement } from "geckosvg/dist/elements/renderable/shape/GeckoSVGPolygonElement";
+import { RoGraphSVG } from "./RoGraphSVG";
 
 const fill = '#e6b400';
 const stroke = '#be8200';
@@ -15,7 +16,7 @@ const width = 150;
 
 let num = 0;
 
-export class WrapBlockSVG extends GeckoSVG {
+export class WrapBlockSVG extends RoGraphSVG {
     shape!: GeckoSVGPolygonElement;
     contentHeight!: number;
     updateShape() {
