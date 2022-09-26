@@ -1,19 +1,23 @@
 {
    "name": "rograph2",
    "version": "0.0.1",
-   "main": "src/dist/electron/main.js",
+   "main": "dist/compiled/electron/main.js",
    "scripts": {
-      "dev": "concurrently -k -s first \"npm run vite\" \"npm run tsc:watch:electron\" \"npm run electron\"",
-      "predev": "npm run tsc:electron",
-      "build": "npm run compile && npm run electron:builder",
-      "vite": "vite",
-      "tsc:electron": "tsc -p tsconfig.electron.json",
-      "tsc:watch:electron": "tsc -w -p tsconfig.electron.json",
+      "dev": "concurrently -k -s first \"vite\" \"npm run tsc:watch:electron\" \"npm run electron\"",
+      "build": "npm run electron:builder",
       "compile": "vite build && npm run tsc:electron",
       "electron": "wait-on tcp:3000 && cross-env IS_DEV=true electron .",
-      "electron:pack": "electron-builder --dir",
-      "electron:builder": "electron-builder ",
-      "test": "cross-env IS_TEST=true ts-mocha -p tsconfig.test.json test/tests.ts --verbose"
+      "tsc:electron": "tsc -p tsconfig.electron.json",
+      "tsc:watch:electron": "tsc -w -p tsconfig.electron.json",
+      "electron:builder": "electron-builder",
+      "prebuild": "npm run compile",
+      "predev": "npm run tsc:electron",
+      "test": "ts-mocha -p all.test.ts --verbose"
+   },
+   "build": {
+      "files": [
+         "./dist/compiled/**/*"
+      ]
    },
    "devDependencies": {
       "@types/chai": "^4.3.1",
@@ -21,18 +25,19 @@
       "chai": "^4.3.6",
       "concurrently": "^7.1.0",
       "cross-env": "^7.0.3",
-      "electron": "^17.4.1",
       "electron-builder": "^22.14.13",
       "electron-reloader": "^1.2.3",
-      "mocha": "^9.2.2",
-      "sass": "^1.50.1",
       "ts-mocha": "^9.0.2",
       "typescript": "^4.6.3",
       "vite": "^2.9.5",
+      "electron": "^17.4.1",
       "wait-on": "^6.0.1"
    },
+   "dependencies": {
+      "geckosvg": "^0.0.4"
+   },
    "author": "Nils Ramstöck",
-   "description": "A template for an Electron App with Vue 3 Typescript using Vite",
+   "description": "RoGraph2 is a graphical programming language for the Arduino",
    "license": "MIT",
    "repository": {
       "type": "git",
@@ -41,8 +46,5 @@
    "bugs": {
       "url": "https://github.com/NilsRamstoeck/RoGraph2/issues"
    },
-   "homepage": "https://github.com/NilsRamstoeck/RoGraph2#readme",
-   "dependencies": {
-      "geckosvg": "^0.0.4"
-   }
+   "homepage": "https://github.com/NilsRamstoeck/RoGraph2#readme"
 }

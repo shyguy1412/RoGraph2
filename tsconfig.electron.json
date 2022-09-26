@@ -7,7 +7,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowJs": true,
-    "outDir": "src/dist/electron"
+    "outDir": "dist/compiled/electron"
   },
   "include": ["src/electron/*.ts"]
 }

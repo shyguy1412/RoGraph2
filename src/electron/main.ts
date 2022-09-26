@@ -86,7 +86,7 @@ function createMenu(): Menu {
       ]
    }));
 
-   if (isDev)
+   if (isDev || true)
       menu.append(new MenuItem({
          label: 'Dev',
          submenu: [
@@ -134,7 +134,7 @@ function createWindow() {
    mainWindow.loadURL(
       isDev
          ? 'http://localhost:3000'
-         : `file://${path.join(__dirname, '../index.html')}`
+         : `file://${path.join(__dirname, '../src/index.html')}`
    );
    // Open the DevTools.
    if (isDev) {
