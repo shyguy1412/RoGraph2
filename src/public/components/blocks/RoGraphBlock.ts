@@ -1,35 +1,42 @@
 import { GeckoSVG } from "geckosvg";
 import { RoGraphElement } from "@components/RoGraphElement";
+import { RoGraphStack } from "@components/RoGraphStack";
 
-export class RoGraphBlockSocket {
-    constructor(parent: RoGraphBlock, pos: { x: number, y: number }) {
+export class RoGraphBlockConnector {
+    pos: { x: number, y: number };
+    parent: HTMLElement;
 
+    constructor(parent: HTMLElement, pos: { x: number, y: number }) {
+        this.parent = parent;
+        this.pos = pos;
     }
-}
 
-export class RoGraphBlockPlug {
-    constructor(parent: RoGraphBlock, pos: { x: number, y: number }) {
-
+    connectStack(stack:RoGraphStack):void{
+        const blocks = [...stack.children].reverse();
+        for(const block of blocks){
+            this.parent.after(block);
+        }
     }
 }
 
 export abstract class RoGraphBlock extends RoGraphElement {
-    private socket: RoGraphBlockSocket | null;
-    private plugs: RoGraphBlockPlug[] | null;
+    connectors: RoGraphBlockConnector[];
     private svg: GeckoSVG;
 
     constructor() {
         super();
-        this.socket = this.defineSocket();
-        this.plugs = this.definePlugs();
+        this.connectors = this.defineConnectors();
         this.svg = this.defineSVG();
 
-        const shadow = this.attachShadow({mode: 'closed'});
+        const shadow = this.attachShadow({ mode: 'closed' });
         shadow.appendChild(this.svg);
     }
 
-    abstract definePlugs():typeof this.plugs;
-    abstract defineSocket():typeof this.socket;
-    abstract defineSVG():GeckoSVG;
+    init(): void {
+        this.classList.add('rg-block');
+    }
+
+    abstract defineConnectors(): typeof this.connectors;
+    abstract defineSVG(): GeckoSVG;
 
 }

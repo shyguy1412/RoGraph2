@@ -1,28 +1,26 @@
 import { registerComponent } from '@components/RoGraphElement';
 import { StackBlockSVG } from '@svg/StackBlockSVG';
 import { GeckoSVG } from 'geckosvg';
-import { RoGraphBlock, RoGraphBlockPlug, RoGraphBlockSocket } from './RoGraphBlock';
+import { RoGraphBlock, RoGraphBlockConnector} from './RoGraphBlock';
 
 export class RoGraphStackBlock extends RoGraphBlock {
 
-    definePlugs(): RoGraphBlockPlug[] {
-        return [
-
-        ]
-    }
-
-    defineSocket(): RoGraphBlockSocket {
-        return new RoGraphBlockSocket(this, {
+    defineConnectors(): RoGraphBlockConnector[] {
+        const self = this;
+        const pos = {
             x: 0,
-            y: 0
-        });
+            get y(){
+                return self.getBoundingClientRect().height
+            },
+        };
+        
+        return [
+            new RoGraphBlockConnector(this, pos)
+        ]
     }
 
     defineSVG(): GeckoSVG {
         return StackBlockSVG.create();
-    }
-
-    init(): void {
     }
 
 }

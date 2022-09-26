@@ -1,4 +1,5 @@
 import { RoGraphBlock } from '@blocks/RoGraphBlock';
+import { dist } from 'assets/functions';
 import { registerComponent, RoGraphElement } from './RoGraphElement';
 
 /**
@@ -9,6 +10,10 @@ export class RoGraphStack extends RoGraphElement {
     //Mouse offset to stack origin at the start of drag
     offset!: { x: number; y: number; };
     private observer!: MutationObserver;
+
+    get canvas() {
+        return this.parentElement!;
+    }
 
     //pixel value to determine when a block is close enough to be inserted
     static get connectionThreshold() { return 25 };
@@ -43,7 +48,7 @@ export class RoGraphStack extends RoGraphElement {
                 if (mutation.attributeName == 'y')
                     element.style.setProperty('--pos-y', element.getAttribute('y'));
             });
-            if(this.childElementCount == 0)this.remove();
+            if (this.childElementCount == 0) this.remove();
         });
 
         this.observer.observe(this, {
@@ -73,20 +78,31 @@ export class RoGraphStack extends RoGraphElement {
     dropStack(e: MouseEvent) {
         this.attached = false;
 
+        //delete stack if outside on the left
+        if (this.x < 0) {
+            this.deleteStack();
+            return;
+        };
+
         //get all blocks
-        const blocks = [...this.parentElement!.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')];
-        console.log(blocks);
-        
-        //check for each stack if it can be connected to a block
-            for (const block of blocks) {
-                if([...this.children].includes(block)){
-                    console.log('SKIPPED OWN CHILD');
-                    continue;
+        const blocks =
+            [...this.canvas.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')]
+                .filter(block => ![...this.children].includes(block));
+
+        const stackBounds = this.getBoundingClientRect();
+
+        outer: for (const block of blocks) {
+            const blockBounds = block.getBoundingClientRect();
+            for (const connector of block.connectors ?? []) {
+                const clientConnectorX = blockBounds.x + connector.pos.x;
+                const clientConnectorY = blockBounds.y + connector.pos.y;
+                const distance = dist(stackBounds.x, stackBounds.y, clientConnectorX, clientConnectorY);
+                if (distance < RoGraphStack.connectionThreshold) {
+                    connector.connectStack(this);
+                    break outer;
                 }
             }
-
-        //delete stack if outside on the left
-        if (this.x < 0) this.deleteStack();
+        }
     }
 
     followMouse(e: MouseEvent) {
@@ -96,7 +112,7 @@ export class RoGraphStack extends RoGraphElement {
         this.x = e.clientX - this.offset.x - canvas.x;
         this.y = e.clientY - this.offset.y - canvas.y;
     }
-    
+
     /**
      * forces the stack to attach to mouse
      */
@@ -106,14 +122,14 @@ export class RoGraphStack extends RoGraphElement {
         this.offset.y = e.clientY - this.y - canvas.y;
         this.attached = true;
     }
-    
+
     /**
      * forces the stack to detach from mouse
      */
     detach() {
         this.attached = false;
     }
-    
+
     deleteStack() {
         this.remove();
         this.observer.disconnect();
