@@ -1,42 +1,30 @@
 import { GeckoSVG } from "geckosvg";
 import { RoGraphElement } from "@components/RoGraphElement";
-import { RoGraphStack } from "@components/RoGraphStack";
-
-export class RoGraphBlockConnector {
-    pos: { x: number, y: number };
-    parent: HTMLElement;
-
-    constructor(parent: HTMLElement, pos: { x: number, y: number }) {
-        this.parent = parent;
-        this.pos = pos;
-    }
-
-    connectStack(stack:RoGraphStack):void{
-        const blocks = [...stack.children].reverse();
-        for(const block of blocks){
-            this.parent.after(block);
-        }
-    }
-}
+import { RoGraphSlot } from "@components/RoGraphSlot";
 
 export abstract class RoGraphBlock extends RoGraphElement {
-    connectors: RoGraphBlockConnector[];
-    private svg: GeckoSVG;
+    svg!: GeckoSVG;
+
+    get slots(){
+        return [...this.querySelectorAll('rg-slot')] as RoGraphSlot[];
+    }
 
     constructor() {
         super();
-        this.connectors = this.defineConnectors();
         this.svg = this.defineSVG();
 
         const shadow = this.attachShadow({ mode: 'closed' });
+        shadow.innerHTML += '<slot></slot>'
         shadow.appendChild(this.svg);
     }
 
     init(): void {
         this.classList.add('rg-block');
+        const slots = [...this.defineSlots()];
+        this.append(...slots);
     }
 
-    abstract defineConnectors(): typeof this.connectors;
+    abstract defineSlots(): RoGraphSlot[];
     abstract defineSVG(): GeckoSVG;
 
 }

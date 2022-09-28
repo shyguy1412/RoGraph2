@@ -16,14 +16,15 @@ export abstract class RoGraphElement extends HTMLElement {
     }
 
     //initilise component after creation
-    abstract init():void;
+    abstract init(): void;
 
     //creates an instance of the element
     static create<T extends RoGraphElement>(type?: new () => T): T {
         const el = document.createElement(
             type ? (type as unknown as typeof RoGraphElement).tag : this.tag
         ) as T;
-        el.init();
+        if (el.init instanceof Function) el.init();
+        else throw new Error('Init not defined on ' + el.constructor.name);
         return el;
     }
 
@@ -34,6 +35,6 @@ export function registerComponent(constructor: RoGraphElementConstructor) {
     if (!window.customElements.get(constructor.tag)) {
         window.customElements.define(constructor.tag, constructor);
     } else {
-            console.warn(`[RoGraphElement] ${constructor.tag} is already defined`);
+        console.warn(`[RoGraphElement] ${constructor.tag} is already defined`);
     }
 }

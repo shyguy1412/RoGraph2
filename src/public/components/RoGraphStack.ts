@@ -1,12 +1,12 @@
 import { RoGraphBlock } from '@blocks/RoGraphBlock';
 import { dist } from 'assets/functions';
 import { registerComponent, RoGraphElement } from './RoGraphElement';
+import { RoGraphScope } from './RoGraphScope';
 
 /**
  * A stack of RoGraph blocks. Manages movement and insertion of blocks into other stacks.
- * A block always needs to be inside a stack
  */
-export class RoGraphStack extends RoGraphElement {
+export class RoGraphStack extends RoGraphScope {
     //Mouse offset to stack origin at the start of drag
     offset!: { x: number; y: number; };
     private observer!: MutationObserver;
@@ -38,6 +38,7 @@ export class RoGraphStack extends RoGraphElement {
 
     //Initilise new stack
     init(): void {
+        super.init();
         //sync position with style
         this.observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation, i) => {
@@ -73,6 +74,8 @@ export class RoGraphStack extends RoGraphElement {
         //stacks should be ordered by interaction
         const canvas = document.querySelector("rg-canvas") as HTMLElement;
         canvas.appendChild(this);
+        console.log('PICKUP');
+
     }
 
     dropStack(e: MouseEvent) {
@@ -84,24 +87,75 @@ export class RoGraphStack extends RoGraphElement {
             return;
         };
 
-        //get all blocks
-        const blocks =
-            [...this.canvas.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')]
-                .filter(block => ![...this.children].includes(block));
+        this.resolveInsertions();
+
+        // //get all blocks
+        // const blocks =
+        //     [...this.canvas.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')]
+        //         .filter(block => ![...this.children].includes(block));
+
+        // const stackBounds = this.getBoundingClientRect();
+
+        // outer: for (const block of blocks) {
+        //     const blockBounds = this.getBoundingClientRect();
+        //     //check all slots
+        //     for (const slot of block.slots ?? []) {
+        //         const slotBounds = slot.getBoundingClientRect();
+        //         const distance = dist(stackBounds.x, stackBounds.y, slotBounds.x, slotBounds.y);
+        //         if (distance < RoGraphStack.connectionThreshold) {
+        //             slot.connectStack(this);
+        //             break outer;
+        //         }
+        //     }
+        // }
+
+        // //check if can be appended to stack
+        // const bottomDist = dist(stackBounds.x, stackBounds.y, blockBounds.x, blockBounds.bottom);
+        // if (bottomDist < RoGraphStack.connectionThreshold) {
+        //     block.append(...blocks.reverse());
+        // }
+    }
+
+    resolveInsertions() {
+        //TODO: Optimize
 
         const stackBounds = this.getBoundingClientRect();
 
-        outer: for (const block of blocks) {
-            const blockBounds = block.getBoundingClientRect();
-            for (const connector of block.connectors ?? []) {
-                const clientConnectorX = blockBounds.x + connector.pos.x;
-                const clientConnectorY = blockBounds.y + connector.pos.y;
-                const distance = dist(stackBounds.x, stackBounds.y, clientConnectorX, clientConnectorY);
-                if (distance < RoGraphStack.connectionThreshold) {
-                    connector.connectStack(this);
-                    break outer;
-                }
+        //get all blocks
+        const blocks =
+            [...this.canvas.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')]
+                .filter(block => ![...this.children].includes(block)); //filter out this stack
+
+        for (const block of blocks) {
+        }
+
+        //get all scopes
+        const scopes = [...this.canvas.querySelectorAll<RoGraphScope>('.rg-scope')]
+        .filter(scope => scope != this); //filter out this stack
+
+        for(const scope of scopes){
+            const scopeBounds = scope.getBoundingClientRect();
+
+            const distTopToBottom = dist(stackBounds.x, stackBounds.top, scopeBounds.x, scopeBounds.bottom);
+            const distBottomToTop = dist(stackBounds.x, stackBounds.bottom, scopeBounds.x, scopeBounds.top);
+
+            console.log(scope);
+            
+            if(distTopToBottom < RoGraphStack.connectionThreshold){
+                const children = [...this.children].reverse();
+                scope.append(...children);
+                this.remove();
             }
+
+            if(distBottomToTop < RoGraphStack.connectionThreshold){
+                const children = [...this.children].reverse();
+                scope.prepend(...children);
+                if(scope instanceof RoGraphStack){
+                    scope.y -= stackBounds.height;
+                }
+                this.remove();
+            }
+
         }
     }
 
