@@ -129,7 +129,7 @@ export class RoGraphStack extends RoGraphScope {
             }
 
             if(distBottomToTop < RoGraphStack.connectionThreshold && scope instanceof RoGraphStack){
-                const children = [...this.children].reverse();
+                const children = [...this.children];
                 scope.prepend(...children);
                 if(scope instanceof RoGraphStack){
                     scope.y -= stackBounds.height;
