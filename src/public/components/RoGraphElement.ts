@@ -20,11 +20,13 @@ export abstract class RoGraphElement extends HTMLElement {
 
     //creates an instance of the element
     static create<T extends RoGraphElement>(type?: new () => T): T {
-        const el = document.createElement(
-            type ? (type as unknown as typeof RoGraphElement).tag : this.tag
-        ) as T;
+        const tag = type ? (type as unknown as typeof RoGraphElement).tag : this.tag
+
+        if (!window.customElements.get(tag)) throw new Error(`[RoGraph] ${tag} is not a registered component`)
+
+        const el = document.createElement(tag) as T;
         if (el.init instanceof Function) el.init();
-        else throw new Error('Init not defined on ' + el.constructor.name);
+        else throw new Error('[RoGraph] Init not defined on ' + el.constructor.name);
         return el;
     }
 
@@ -35,6 +37,6 @@ export function registerComponent(constructor: RoGraphElementConstructor) {
     if (!window.customElements.get(constructor.tag)) {
         window.customElements.define(constructor.tag, constructor);
     } else {
-        console.warn(`[RoGraphElement] ${constructor.tag} is already defined`);
+        console.warn(`[RoGraph] ${constructor.tag} is already defined`);
     }
 }
