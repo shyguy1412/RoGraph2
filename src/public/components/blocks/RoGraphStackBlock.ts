@@ -5,6 +5,9 @@ import { GeckoSVG } from 'geckosvg';
 import { RoGraphBlock} from './RoGraphBlock';
 
 export class RoGraphStackBlock extends RoGraphBlock {
+    
+    slotUpdate(slot: RoGraphSlot): void {
+    }
 
     defineSlots(): RoGraphSlot[] {
         return [

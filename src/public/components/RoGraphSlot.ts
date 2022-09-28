@@ -1,15 +1,17 @@
 import { registerComponent, RoGraphElement } from "./RoGraphElement";
-import { RoGraphStack } from "./RoGraphStack";
+import { RoGraphScope } from "./RoGraphScope";
 
-export class RoGraphSlot extends RoGraphElement {
+export abstract class RoGraphSlot extends RoGraphScope {
 
     pos: { x: number, y: number } | null = null;
     parent: RoGraphElement | null = null;
 
-    connectStack(stack: RoGraphStack): void {
-        const blocks = [...stack.children].reverse();
-        this.prepend(...blocks);
-    }
+    // connectScope(stack: RoGraphStack): void {
+    //     const blocks = [...stack.children].reverse();
+    //     this.prepend(...blocks);
+    //     console.log('TRUE');
+
+    // }
 
     for(parent: typeof this.parent) {
         this.parent = parent;
@@ -20,16 +22,14 @@ export class RoGraphSlot extends RoGraphElement {
         this.pos = pos;
         this.updateClientPosition();
         return this;
-    }
 
-    private updateClientPosition() {
-        this.style.left = (this.pos?.x || 0) + 'px';
-        this.style.top = (this.pos?.y || 0) + 'px';
     }
 
     init(): void {
+        super.init();
+        this.classList.add('rg-slot');
     }
+    
+    abstract updateClientPosition():void;
 
 }
-
-registerComponent(RoGraphSlot);
