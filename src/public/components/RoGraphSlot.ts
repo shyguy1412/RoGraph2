@@ -3,21 +3,28 @@ import { RoGraphStack } from "./RoGraphStack";
 
 export class RoGraphSlot extends RoGraphElement {
 
+    pos: { x: number, y: number } | null = null;
+    parent: RoGraphElement | null = null;
+
     connectStack(stack: RoGraphStack): void {
         const blocks = [...stack.children].reverse();
         this.prepend(...blocks);
     }
 
-    set pos(pos: { x: number, y: number }) {
-        const { x, y } = pos;
-        this.style.setProperty('xPos', '' + x);
-        this.style.setProperty('yPos', '' + y);
+    for(parent: typeof this.parent) {
+        this.parent = parent;
+        return this;
     }
 
-    get pos() {
-        const x = Number.parseInt(this.style.getPropertyValue('xpos'));
-        const y = Number.parseInt(this.style.getPropertyValue('ypos'));
-        return { x, y }
+    at(pos: typeof this.pos) {
+        this.pos = pos;
+        this.updateClientPosition();
+        return this;
+    }
+
+    private updateClientPosition() {
+        this.style.left = (this.pos?.x || 0) + 'px';
+        this.style.top = (this.pos?.y || 0) + 'px';
     }
 
     init(): void {

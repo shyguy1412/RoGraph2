@@ -88,32 +88,6 @@ export class RoGraphStack extends RoGraphScope {
         };
 
         this.resolveInsertions();
-
-        // //get all blocks
-        // const blocks =
-        //     [...this.canvas.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')]
-        //         .filter(block => ![...this.children].includes(block));
-
-        // const stackBounds = this.getBoundingClientRect();
-
-        // outer: for (const block of blocks) {
-        //     const blockBounds = this.getBoundingClientRect();
-        //     //check all slots
-        //     for (const slot of block.slots ?? []) {
-        //         const slotBounds = slot.getBoundingClientRect();
-        //         const distance = dist(stackBounds.x, stackBounds.y, slotBounds.x, slotBounds.y);
-        //         if (distance < RoGraphStack.connectionThreshold) {
-        //             slot.connectStack(this);
-        //             break outer;
-        //         }
-        //     }
-        // }
-
-        // //check if can be appended to stack
-        // const bottomDist = dist(stackBounds.x, stackBounds.y, blockBounds.x, blockBounds.bottom);
-        // if (bottomDist < RoGraphStack.connectionThreshold) {
-        //     block.append(...blocks.reverse());
-        // }
     }
 
     resolveInsertions() {
@@ -127,6 +101,16 @@ export class RoGraphStack extends RoGraphScope {
                 .filter(block => ![...this.children].includes(block)); //filter out this stack
 
         for (const block of blocks) {
+            const blockBounds = this.getBoundingClientRect();
+            //check all slots
+            for (const slot of block.slots ?? []) {
+                const slotBounds = slot.getBoundingClientRect();
+                const distance = dist(stackBounds.x, stackBounds.y, slotBounds.x, slotBounds.y);
+                if (distance < RoGraphStack.connectionThreshold) {
+                    slot.connectStack(this);
+                    return;
+                }
+            }
         }
 
         //get all scopes
@@ -145,6 +129,7 @@ export class RoGraphStack extends RoGraphScope {
                 const children = [...this.children].reverse();
                 scope.append(...children);
                 this.remove();
+                return;
             }
 
             if(distBottomToTop < RoGraphStack.connectionThreshold){
@@ -154,6 +139,7 @@ export class RoGraphStack extends RoGraphScope {
                     scope.y -= stackBounds.height;
                 }
                 this.remove();
+                return;
             }
 
         }

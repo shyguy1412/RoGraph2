@@ -1,22 +1,22 @@
 import { registerComponent } from "@components/RoGraphElement";
+import { RoGraphSlot } from "@components/RoGraphSlot";
 import { WrapBlockSVG } from "@svg/WrapBlockSVG";
 import { GeckoSVG } from "geckosvg";
-import { RoGraphBlock, RoGraphBlockConnector } from "./RoGraphBlock";
+import { RoGraphBlock } from "./RoGraphBlock";
 
 
 export class RoGraphWrapBlock extends RoGraphBlock {
 
-    defineConnectors(): RoGraphBlockConnector[] {
-        const self = this;
-        const pos = {
-            x: 0,
-            get y() {
-                return self.getBoundingClientRect().height
-            },
-        };
+    declare svg: WrapBlockSVG;
 
+    defineSlots(): RoGraphSlot[] {
         return [
-            new RoGraphBlockConnector(this, pos)
+            RoGraphSlot.create<RoGraphSlot>()
+            .for(this)
+            .at({
+                x: WrapBlockSVG.stem,
+                y: WrapBlockSVG.upperHeight
+            })
         ]
     }
 
@@ -24,29 +24,6 @@ export class RoGraphWrapBlock extends RoGraphBlock {
         return WrapBlockSVG.create();
     }
 
-    init(): void {
-        super.init();
-
-        // this.appendChild(document.createElement('div'));
-        // this.content.classList.add('wrap-content');
-
-        // const observer = new MutationObserver((mutations) => {
-        //     console.log([...this.content.children].reduce((previous, next) => {
-        //         console.log(next);
-
-        //         return previous += next.getBoundingClientRect().width;
-        //     }, 0));
-
-        //     const bounds = this.content.getBoundingClientRect();
-        //     this.svg.contentHeight = bounds.height;
-        //     this.svg.updateShape();
-        // });
-
-        // observer.observe(this.content, { childList: true })
-    }
-
 }
 
-
 registerComponent(RoGraphWrapBlock);
-// registerComponent(RoGraphWrapBlockContent);

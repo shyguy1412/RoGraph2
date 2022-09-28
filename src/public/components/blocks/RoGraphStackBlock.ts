@@ -1,21 +1,13 @@
 import { registerComponent } from '@components/RoGraphElement';
+import { RoGraphSlot } from '@components/RoGraphSlot';
 import { StackBlockSVG } from '@svg/StackBlockSVG';
 import { GeckoSVG } from 'geckosvg';
-import { RoGraphBlock, RoGraphBlockConnector} from './RoGraphBlock';
+import { RoGraphBlock} from './RoGraphBlock';
 
 export class RoGraphStackBlock extends RoGraphBlock {
 
-    defineConnectors(): RoGraphBlockConnector[] {
-        const self = this;
-        const pos = {
-            x: 0,
-            get y(){
-                return self.getBoundingClientRect().height
-            },
-        };
-        
+    defineSlots(): RoGraphSlot[] {
         return [
-            new RoGraphBlockConnector(this, pos)
         ]
     }
 
