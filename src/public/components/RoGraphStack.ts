@@ -15,9 +15,6 @@ export class RoGraphStack extends RoGraphScope {
         return this.parentElement!;
     }
 
-    //pixel value to determine when a block is close enough to be inserted
-    static get connectionThreshold() { return 25 };
-
     // Getters and Setters for position
     set x(x: number) {
         this.setAttribute('x', x.toString());
@@ -121,14 +118,14 @@ export class RoGraphStack extends RoGraphScope {
             const distTopToBottom = dist(stackBounds.x, stackBounds.top, scopeBounds.x, scopeBounds.bottom);
             const distBottomToTop = dist(stackBounds.x, stackBounds.bottom, scopeBounds.x, scopeBounds.top);
 
-            if(distTopToBottom < RoGraphStack.connectionThreshold){
+            if(distTopToBottom < RoGraphScope.connectionThreshold){
                 const children = [...this.children];
                 scope.append(...children);
                 this.remove();
                 return;
             }
 
-            if(distBottomToTop < RoGraphStack.connectionThreshold && scope instanceof RoGraphStack){
+            if(distBottomToTop < RoGraphScope.connectionThreshold && scope instanceof RoGraphStack){
                 const children = [...this.children];
                 scope.prepend(...children);
                 if(scope instanceof RoGraphStack){
