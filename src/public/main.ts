@@ -1,9 +1,8 @@
-import { RoGraphCanvas } from './components/RoGraphCanvas';
-import {RoGraphMenu} from './components/RoGraphMenu';
-import { RoGraphStack } from './components/RoGraphStack';
-import { RoGraphStackBlock } from './components/blocks/RoGraphStackBlock';
-import { RoGraphWrapBlock } from './components/blocks/RoGraphWrapBlock';
-import { RoGraphScope } from '@components/RoGraphScope';
+import { RoGraphStackBlock } from '@blocks/RoGraphStackBlock';
+import { RoGraphWrapBlock } from '@blocks/RoGraphWrapBlock';
+import { RoGraphCanvas } from '@components/RoGraphCanvas';
+import { RoGraphMenu } from '@components/RoGraphMenu';
+import { RoGraphStack } from '@components/RoGraphStack';
 
 //get reference to app root
 const app = document.querySelector('#app')!;

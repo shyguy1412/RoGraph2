@@ -72,16 +72,16 @@ function createMenu(): Menu {
          {
             label: 'Build',
             accelerator: 'ctrl+r',
-            click: () => {}
+            click: () => { }
          },
          {
             label: 'Upload',
             accelerator: 'ctrl+u',
-            click: () => {}
+            click: () => { }
          },
          {
             label: 'Open console',
-            click: () => {}
+            click: () => { }
          },
       ]
    }));

@@ -14,6 +14,7 @@ export default defineConfig({
       "@components": resolve(__dirname, "src/public/components"),
       "@blocks": resolve(__dirname, "src/public/components/blocks"),
       "@svg": resolve(__dirname, "src/public/svg"),
+      "@i18next": resolve(__dirname, "i18n/i18next.config.ts"),
       "assets": resolve(__dirname, "src/public/assets"),
     }
   },

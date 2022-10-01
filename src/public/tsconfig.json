@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "../../dist/compiled/tsc",
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
@@ -11,13 +12,13 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom", "dom.iterable"],
-    "baseUrl": "./src/public",
+    "baseUrl": "../../",
     "paths": {
-      "@blocks/*": ["components/blocks/*"],
-      "@components/*": ["components/*"],
-      "@svg/*": ["svg/*"]
+      "@blocks/*": ["src/public/components/blocks/*"],
+      "@components/*": ["src/public/components/*"],
+      "@svg/*": ["src/public/svg/*"],
+      "@i18next": ["i18n/i18next.config.ts"]
     }
   },
-  "include": ["src/public/**/*.ts", "src/public/**/*.d.ts", "src/public/**/*.tsx", "src/public/**/*.vue"],
-  "exclude": ["src/electron/*.ts"],
+  "include": ["./**/*.ts", "../../i18n/i18next.config.ts"],
 }
