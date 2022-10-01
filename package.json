@@ -12,6 +12,7 @@
       "electron:builder": "electron-builder",
       "prebuild": "npm run compile",
       "predev": "npm run tsc:electron",
+      "pretsc:electron": "cp -rT ./i18n dist/compiled/i18n/",
       "test": "ts-mocha -p all.test.ts --verbose"
    },
    "build": {

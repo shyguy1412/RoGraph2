@@ -1,6 +1,6 @@
-// electron/electron.js
 import * as path from 'path';
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
+import i18n from './i18next.config';
 
 const isDev = process.env.IS_DEV == "true" ? true : false;
 
@@ -8,99 +8,91 @@ function createMenu(): Menu {
    const menu = new Menu()
 
    menu.append(new MenuItem({
-      label: 'File',
+      label: i18n.t('fileMenu'),
       submenu: [
          {
-            label: 'New',
+            label: i18n.t('fileMenuNewOption'),
             accelerator: 'ctrl+n',
             click: () => { }
          },
          {
-            label: 'Open',
+            label: i18n.t('fileMenuOpenOption'),
             accelerator: 'ctrl+o',
             click: () => { }
          },
          {
-            label: 'Examples',
+            label: i18n.t('fileMenuExamplesOption'),
             accelerator: 'ctrl+e',
             click: () => { }
          },
          {
-            label: 'Language',
-            click: () => { }
+            label: i18n.t('fileMenuLanguageOption'),
+            click: () => { openChangeLanguageDialog() }
          },
          {
-            label: 'Save',
+            label: i18n.t('fileMenuSaveOption'),
             accelerator: 'ctrl+s',
             click: () => { }
          },
          {
-            label: 'Save as',
+            label: i18n.t('fileMenuSaveAsOption'),
             accelerator: 'ctrl+shift+s',
             click: () => { }
          },
          {
-            label: 'Exit',
+            label: i18n.t('fileMenuExitOption'),
             click: () => { app.quit() }
          },
       ]
    }));
 
    menu.append(new MenuItem({
-      label: 'Edit',
+      label: i18n.t('editMenu'),
       submenu: [
          {
-            label: 'Undo',
+            label: i18n.t('editMenuUndoOption'),
             accelerator: 'ctrl+z',
             click: () => { }
          },
          {
-            label: 'Redo',
+            label: i18n.t('editMenuRedoOption'),
             accelerator: 'ctrl+y',
-            click: () => { }
-         },
-         {
-            label: 'Import functions',
             click: () => { }
          },
       ]
    }));
 
    menu.append(new MenuItem({
-      label: 'Sketch',
+      label: i18n.t('sketchMenu'),
       submenu: [
          {
-            label: 'Build',
+            label: i18n.t('sketchMenuBuildOption'),
             accelerator: 'ctrl+r',
             click: () => { }
          },
          {
-            label: 'Upload',
+            label: i18n.t('sketchMenuUploadOption'),
             accelerator: 'ctrl+u',
-            click: () => { }
-         },
-         {
-            label: 'Open console',
             click: () => { }
          },
       ]
    }));
 
-   if (isDev || true)
+   if (isDev)
       menu.append(new MenuItem({
-         label: 'Dev',
+         label: i18n.t('devMenu'),
          submenu: [
             {
-               label: 'Toggle Developer Tools',
+               label: i18n.t('devMenuDevToolsOption'),
                accelerator: 'ctrl+shift+i',
                click: () => { BrowserWindow.getFocusedWindow()!.webContents.toggleDevTools() }
             }, {
-               label: 'Reload',
+               label: i18n.t('devMenuReloadOption'),
                accelerator: 'f5',
                click: () => { BrowserWindow.getFocusedWindow()!.reload() }
             },
             {
-               label: 'Exit',
+               label: i18n.t('devMenuExitOption'),
                accelerator: 'esc',
                click: () => { app.quit() }
             },
@@ -147,6 +139,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
    createWindow()
+   
    app.on('activate', function () {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
@@ -162,3 +155,12 @@ app.on('window-all-closed', () => {
       app.quit();
    }
 });
+
+//for now just load english
+function openChangeLanguageDialog() {
+   i18n.changeLanguage('de_DE');
+
+   BrowserWindow.getAllWindows().forEach(window => window.close());
+   createWindow();
+}
+

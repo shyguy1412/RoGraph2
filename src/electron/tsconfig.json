@@ -8,10 +8,6 @@
     "esModuleInterop": true,
     "allowJs": true,
     "outDir": "../../dist/compiled/electron",
-    "baseUrl": "../../",
-    "paths": {
-      "@i18next": ["i18n/i18next.config.ts"]
-    }
   },
-  "include": ["./**/*.ts", "../../i18n/i18next.config.ts"],
+  "include": ["./**/*.ts", "../i18n/*.json"],
 }

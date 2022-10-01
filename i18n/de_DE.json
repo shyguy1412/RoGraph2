@@ -1,0 +1,22 @@
+{
+    "menu": {
+        "fileMenu": "Datei",
+        "fileMenuNewOption": "Neu",
+        "fileMenuOpenOption": "Öffnen",
+        "fileMenuExamplesOption": "Beispiele",
+        "fileMenuLanguageOption": "Sprache",
+        "fileMenuSaveOption": "Speichern",
+        "fileMenuSaveAsOption": "Speichern als",
+        "fileMenuExitOption": "Beenden",
+        "editMenu": "Bearbeiten",
+        "editMenuUndoOption": "Rückganging machen",
+        "editMenuRedoOption": "Wiederherstellen",
+        "sketchMenu": "Sketch",
+        "sketchMenuBuildOption": "Bauen",
+        "sketchMenuUploadOption": "Hochladen",
+        "devMenu": "Dev",
+        "devMenuDevToolsOption": "Devtools umschalten",
+        "devMenuReloadOption": "Neuladen",
+        "devMenuExitOption": "Beenden"
+    }
+}

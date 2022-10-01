@@ -12,13 +12,12 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom", "dom.iterable"],
-    "baseUrl": "../../",
+    "baseUrl": "../",
     "paths": {
-      "@blocks/*": ["src/public/components/blocks/*"],
-      "@components/*": ["src/public/components/*"],
-      "@svg/*": ["src/public/svg/*"],
-      "@i18next": ["i18n/i18next.config.ts"]
+      "@blocks/*": ["public/components/blocks/*"],
+      "@components/*": ["public/components/*"],
+      "@svg/*": ["public/svg/*"],
     }
   },
-  "include": ["./**/*.ts", "../../i18n/i18next.config.ts"],
+  "include": ["./**/*.ts"],
 }
