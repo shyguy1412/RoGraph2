@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 import i18n from './i18next.config';
+import menuActionMap from './menu';
 
 const isDev = process.env.IS_DEV == "true" ? true : false;
 
@@ -13,35 +14,35 @@ function createMenu(): Menu {
          {
             label: i18n.t('fileMenuNewOption'),
             accelerator: 'ctrl+n',
-            click: () => { }
+            click: menuActionMap['newFile']
          },
          {
             label: i18n.t('fileMenuOpenOption'),
             accelerator: 'ctrl+o',
-            click: () => { }
+            click: menuActionMap['openFile']
          },
          {
             label: i18n.t('fileMenuExamplesOption'),
             accelerator: 'ctrl+e',
-            click: () => { }
+            click: menuActionMap['openExamples']
          },
          {
             label: i18n.t('fileMenuLanguageOption'),
-            click: () => { openChangeLanguageDialog() }
+            click: menuActionMap['changeLanguage']
          },
          {
             label: i18n.t('fileMenuSaveOption'),
             accelerator: 'ctrl+s',
-            click: () => { }
+            click: menuActionMap['saveSketch']
          },
          {
             label: i18n.t('fileMenuSaveAsOption'),
             accelerator: 'ctrl+shift+s',
-            click: () => { }
+            click: menuActionMap['saveSketchAs']
          },
          {
             label: i18n.t('fileMenuExitOption'),
-            click: () => { app.quit() }
+            click: menuActionMap['exit']
          },
       ]
    }));
@@ -52,12 +53,12 @@ function createMenu(): Menu {
          {
             label: i18n.t('editMenuUndoOption'),
             accelerator: 'ctrl+z',
-            click: () => { }
+            click: menuActionMap['undo']
          },
          {
             label: i18n.t('editMenuRedoOption'),
             accelerator: 'ctrl+y',
-            click: () => { }
+            click: menuActionMap['redo']
          },
       ]
    }));
@@ -68,12 +69,12 @@ function createMenu(): Menu {
          {
             label: i18n.t('sketchMenuBuildOption'),
             accelerator: 'ctrl+r',
-            click: () => { }
+            click: menuActionMap['buildSketch']
          },
          {
             label: i18n.t('sketchMenuUploadOption'),
             accelerator: 'ctrl+u',
-            click: () => { }
+            click: menuActionMap['uploadSketch']
          },
       ]
    }));
@@ -156,11 +157,4 @@ app.on('window-all-closed', () => {
    }
 });
 
-//for now just load english
-function openChangeLanguageDialog() {
-   i18n.changeLanguage('de_DE');
-
-   BrowserWindow.getAllWindows().forEach(window => window.close());
-   createWindow();
-}
 

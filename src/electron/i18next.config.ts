@@ -1,4 +1,4 @@
-import i18n, { Resource } from 'i18next';
+import i18n from 'i18next';
 import fs from 'fs';
 import path from 'path';
 
@@ -26,7 +26,7 @@ i18n.on('languageChanged', (lang) => {
         console.log(languagePath);
         
         if(!fs.existsSync(languagePath)) return;
-        const resource = JSON.parse(fs.readFileSync(languagePath).toString()) as Resource;
+        const resource = JSON.parse(fs.readFileSync(languagePath).toString());
         console.log(resource);
         
         Object.keys(resource).forEach(ns => {
