@@ -1,5 +1,5 @@
-import { RoGraphCanvas } from '@components/RoGraphCanvas';
-import { RoGraphMenu } from '@components/RoGraphMenu';
+import { RoGraphCanvas } from '@rograph/RoGraphCanvas';
+import { RoGraphMenu } from '@rograph/RoGraphMenu';
 
 //get reference to app root
 const app = document.querySelector('#app')!;

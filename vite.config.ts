@@ -11,11 +11,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@components": resolve(__dirname, "src/public/components"),
-      "@blocks": resolve(__dirname, "src/public/components/blocks"),
+      "@rograph": resolve(__dirname, "src/public/components/rograph"),
       "@svg": resolve(__dirname, "src/public/svg"),
-      "@i18next": resolve(__dirname, "i18n/i18next.config.ts"),
-      "assets": resolve(__dirname, "src/public/assets"),
     }
   },
   esbuild: 

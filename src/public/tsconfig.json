@@ -14,8 +14,7 @@
     "lib": ["esnext", "dom", "dom.iterable"],
     "baseUrl": "../",
     "paths": {
-      "@blocks/*": ["public/components/blocks/*"],
-      "@components/*": ["public/components/*"],
+      "@rograph/*": ["public/components/rograph/*"],
       "@svg/*": ["public/svg/*"],
     }
   },

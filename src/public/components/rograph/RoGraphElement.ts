@@ -1,5 +1,3 @@
-import { RoGraphStack } from "./RoGraphStack";
-
 interface RoGraphElementConstructor {
     readonly tag: string,
     new(): RoGraphElement

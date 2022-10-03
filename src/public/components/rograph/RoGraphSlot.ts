@@ -1,4 +1,4 @@
-import { registerComponent, RoGraphElement } from "./RoGraphElement";
+import { RoGraphElement } from "./RoGraphElement";
 import { RoGraphScope } from "./RoGraphScope";
 
 export abstract class RoGraphSlot extends RoGraphScope {

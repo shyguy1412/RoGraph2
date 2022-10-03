@@ -1,6 +1,5 @@
-import { RoGraphBlock } from '@blocks/RoGraphBlock';
-import { dist } from 'assets/functions';
-import { registerComponent, RoGraphElement } from './RoGraphElement';
+import { dist } from '../../assets/functions';
+import { registerComponent } from './RoGraphElement';
 import { RoGraphScope } from './RoGraphScope';
 
 /**

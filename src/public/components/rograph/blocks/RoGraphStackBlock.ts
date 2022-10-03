@@ -1,5 +1,5 @@
-import { registerComponent } from '@components/RoGraphElement';
-import { RoGraphSlot } from '@components/RoGraphSlot';
+import { registerComponent } from '@rograph/RoGraphElement';
+import { RoGraphSlot } from '@rograph/RoGraphSlot';
 import { StackBlockSVG } from '@svg/StackBlockSVG';
 import { GeckoSVG } from 'geckosvg';
 import { RoGraphBlock} from './RoGraphBlock';
