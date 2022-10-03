@@ -3,7 +3,12 @@ import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 import i18n from './i18next.config';
 import menuActionMap from './menu';
 
+
 const isDev = process.env.IS_DEV == "true" ? true : false;
+
+if (isDev) require('electron-reload')(__dirname, {
+   electron: require(path.resolve(__dirname, '../../..', 'node_modules/electron'))
+});
 
 function createMenu(): Menu {
    const menu = new Menu()
@@ -109,7 +114,7 @@ function createWindow() {
    const height = 700;
    const mainWindow = new BrowserWindow({
       width: isDev ? width + 400 : 0,
-      height: 0,
+      height: height,
       minWidth: width,
       minHeight: height,
       webPreferences: {
@@ -140,7 +145,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
    createWindow()
-   
+
    app.on('activate', function () {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

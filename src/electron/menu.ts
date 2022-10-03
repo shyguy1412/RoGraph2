@@ -1,4 +1,5 @@
-import { app } from "electron";
+import { app, BrowserWindow, ipcMain, ipcRenderer } from "electron";
+import { availableLanguages } from "./i18next.config";
 
 function newFile() {
     throw new Error("Function not implemented.");
@@ -16,7 +17,7 @@ function openExamples() {
 
 
 function changeLanguage() {
-    throw new Error("Function not implemented.");
+    BrowserWindow.getFocusedWindow()?.webContents.send('change-language', availableLanguages);
 }
 
 

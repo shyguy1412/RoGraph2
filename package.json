@@ -28,6 +28,7 @@
       "cross-env": "^7.0.3",
       "electron": "^17.4.1",
       "electron-builder": "^22.14.13",
+      "electron-reload": "^2.0.0-alpha.1",
       "electron-reloader": "^1.2.3",
       "geckosvg": "^0.0.4",
       "i18next": "^21.9.2",
