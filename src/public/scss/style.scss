@@ -1,5 +1,13 @@
 @use './components';
 
+@import url('./font-awesome/css/all.min.css');
+
+:root{
+    --modal-backdrop: rgba(0, 0, 0, 0.5);
+    --settings-background: white;
+    --color-primary: rgb(252, 196, 25);
+}
+
 #app {
     display: grid;
     grid-auto-flow: column;

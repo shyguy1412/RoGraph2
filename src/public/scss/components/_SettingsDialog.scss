@@ -1,0 +1,39 @@
+settings-dialog {
+    position: absolute;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--modal-backdrop);
+    justify-content: center;
+    align-items: center;
+}
+
+settings-dialog .settings {
+    width: 750px;
+    height: 500px;
+    background-color: var(--settings-background);
+    padding: 1em;
+}
+
+settings-dialog .settings-title {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+settings-dialog .settings-title::after {
+    content: '';
+
+    --thickness: 3px;
+
+    display: block;
+    width: 100%;
+    height: var(--thickness);
+    border-radius: var(--thickness);
+    background: var(--color-primary);
+    position: absolute;
+    margin-top: 3px;
+    bottom: calc(var(--thickness) * -1 - 2px);
+    left: 0;
+}
