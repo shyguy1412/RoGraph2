@@ -181,7 +181,7 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.handle('change-language', (_e, lang) => {
-   i18n.changeLanguage('de_DE');
+   i18n.changeLanguage(lang);
 });
 
 ipcMain.handle('soft-reload', () => {
