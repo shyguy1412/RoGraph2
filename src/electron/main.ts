@@ -2,6 +2,7 @@ import * as path from 'path';
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 import i18n from './i18next.config';
 import menuActionMap from './menu';
+import { ipcMain } from 'electron/main';
 
 
 const isDev = process.env.IS_DEV == "true" ? true : false;
@@ -14,91 +15,103 @@ function createMenu(): Menu {
    const menu = new Menu()
 
    menu.append(new MenuItem({
-      label: i18n.t('fileMenu'),
+      label: i18n.t('File'),
       submenu: [
          {
-            label: i18n.t('fileMenuNewOption'),
+            label: i18n.t('New'),
             accelerator: 'ctrl+n',
-            click: menuActionMap['newFile']
+            click: menuActionMap['newSketch']
          },
          {
-            label: i18n.t('fileMenuOpenOption'),
+            label: i18n.t('Open') + '...',
             accelerator: 'ctrl+o',
-            click: menuActionMap['openFile']
+            click: menuActionMap['openSketch']
          },
          {
-            label: i18n.t('fileMenuExamplesOption'),
+            label: i18n.t('Examples'),
             accelerator: 'ctrl+e',
             click: menuActionMap['openExamples']
          },
          {
-            label: i18n.t('fileMenuLanguageOption'),
-            click: menuActionMap['changeLanguage']
+            label: i18n.t('Close'),
+            click: menuActionMap['closeSketch']
          },
          {
-            label: i18n.t('fileMenuSaveOption'),
+            label: i18n.t('Save'),
             accelerator: 'ctrl+s',
             click: menuActionMap['saveSketch']
          },
          {
-            label: i18n.t('fileMenuSaveAsOption'),
+            label: i18n.t('Save as'),
             accelerator: 'ctrl+shift+s',
             click: menuActionMap['saveSketchAs']
          },
          {
-            label: i18n.t('fileMenuExitOption'),
+            type: 'separator'
+         },
+         {
+            label: i18n.t('Settings'),
+            click: menuActionMap['openSettings']
+         },
+         {
+            type: 'separator'
+         },
+         {
+            label: i18n.t('Exit'),
             click: menuActionMap['exit']
          },
       ]
    }));
 
    menu.append(new MenuItem({
-      label: i18n.t('editMenu'),
+      label: i18n.t('Edit'),
       submenu: [
          {
-            label: i18n.t('editMenuUndoOption'),
+            label: i18n.t('Undo'),
             accelerator: 'ctrl+z',
             click: menuActionMap['undo']
          },
          {
-            label: i18n.t('editMenuRedoOption'),
+            label: i18n.t('Redo'),
             accelerator: 'ctrl+y',
             click: menuActionMap['redo']
-         },
+         }, //TODO: copy/paste. Highlight selected scope?
       ]
    }));
 
    menu.append(new MenuItem({
-      label: i18n.t('sketchMenu'),
+      label: i18n.t('Sketch'),
       submenu: [
          {
-            label: i18n.t('sketchMenuBuildOption'),
+            label: i18n.t('Build'),
             accelerator: 'ctrl+r',
             click: menuActionMap['buildSketch']
          },
          {
-            label: i18n.t('sketchMenuUploadOption'),
+            label: i18n.t('Upload'),
             accelerator: 'ctrl+u',
             click: menuActionMap['uploadSketch']
-         },
+         }, //TODO: Export binary
       ]
    }));
 
+   //TODO: Tools menu for serial plotter and moniter, port selection, board selection
+
    if (isDev)
       menu.append(new MenuItem({
-         label: i18n.t('devMenu'),
+         label: i18n.t('Dev'),
          submenu: [
             {
-               label: i18n.t('devMenuDevToolsOption'),
+               label: i18n.t('Toggle Developer Tools'),
                accelerator: 'ctrl+shift+i',
                click: () => { BrowserWindow.getFocusedWindow()!.webContents.toggleDevTools() }
             }, {
-               label: i18n.t('devMenuReloadOption'),
+               label: i18n.t('Reload'),
                accelerator: 'f5',
                click: () => { BrowserWindow.getFocusedWindow()!.reload() }
             },
             {
-               label: i18n.t('devMenuExitOption'),
+               label: i18n.t('Exit'),
                accelerator: 'esc',
                click: () => { app.quit() }
             },
@@ -109,6 +122,7 @@ function createMenu(): Menu {
 }
 
 function createWindow() {
+   
    // Create the browser window.
    const width = 900;
    const height = 700;
@@ -138,6 +152,10 @@ function createWindow() {
    if (isDev) {
       mainWindow.webContents.openDevTools();
    }
+
+   mainWindow.webContents.once('did-finish-load', () => {
+      mainWindow.webContents.send('set-language', i18n.language);      
+   })
 }
 
 // This method will be called when Electron has finished
@@ -162,4 +180,11 @@ app.on('window-all-closed', () => {
    }
 });
 
+ipcMain.handle('change-language', (_e, lang) => {
+   i18n.changeLanguage('de_DE');
+});
 
+ipcMain.handle('soft-reload', () => {
+   BrowserWindow.getAllWindows().forEach(window => window.close());
+   createWindow();
+})

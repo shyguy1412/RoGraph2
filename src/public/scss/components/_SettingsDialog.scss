@@ -10,7 +10,6 @@ settings-dialog {
 
 settings-dialog .settings {
     width: 750px;
-    height: 500px;
     background-color: var(--settings-background);
     padding: 1em;
 }
@@ -36,4 +35,11 @@ settings-dialog .settings-title::after {
     margin-top: 3px;
     bottom: calc(var(--thickness) * -1 - 2px);
     left: 0;
+}
+
+settings-dialog .settings-control{
+    margin-top: 1em;
+    display: flex;
+    justify-content: right;
+    gap: 0.4em;
 }

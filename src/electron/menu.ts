@@ -1,23 +1,26 @@
-import { app, BrowserWindow, ipcMain, ipcRenderer } from "electron";
+import { app, BrowserWindow } from "electron";
 import { availableLanguages } from "./i18next.config";
 
-function newFile() {
+function newSketch() {
     throw new Error("Function not implemented.");
 }
 
 
-function openFile() {
+function openSketch() {
     throw new Error("Function not implemented.");
 }
 
+function closeSketch() {
+    throw new Error("Function not implemented.");
+}
 
 function openExamples() {
     throw new Error("Function not implemented.");
 }
 
 
-function changeLanguage() {
-    BrowserWindow.getFocusedWindow()?.webContents.send('change-language', availableLanguages);
+function openSettings() {
+    BrowserWindow.getFocusedWindow()?.webContents.send('open-settings', availableLanguages);
 }
 
 
@@ -55,10 +58,11 @@ function exit() {
 }
 
 export default {
-    newFile,
-    openFile,
+    newSketch,
+    openSketch,
+    closeSketch,
     openExamples,
-    changeLanguage,
+    openSettings,
     saveSketch,
     saveSketchAs,
     undo,

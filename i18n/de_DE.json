@@ -1,22 +1,30 @@
 {
+    "meta": {
+        "name": "German",
+        "native_name": "Deutsch"
+    },
     "menu": {
-        "fileMenu": "Datei",
-        "fileMenuNewOption": "Neu",
-        "fileMenuOpenOption": "Öffnen",
-        "fileMenuExamplesOption": "Beispiele",
-        "fileMenuLanguageOption": "Sprache",
-        "fileMenuSaveOption": "Speichern",
-        "fileMenuSaveAsOption": "Speichern als",
-        "fileMenuExitOption": "Beenden",
-        "editMenu": "Bearbeiten",
-        "editMenuUndoOption": "Rückganging machen",
-        "editMenuRedoOption": "Wiederherstellen",
-        "sketchMenu": "Sketch",
-        "sketchMenuBuildOption": "Bauen",
-        "sketchMenuUploadOption": "Hochladen",
-        "devMenu": "Dev",
-        "devMenuDevToolsOption": "Devtools umschalten",
-        "devMenuReloadOption": "Neuladen",
-        "devMenuExitOption": "Beenden"
+        "File": "Datei",
+        "New": "Neu",
+        "Open": "Öffnen",
+        "Close": "Schließen",
+        "Examples": "Beispiele",
+        "Settings": "Einstellungen",
+        "Save": "Speichern",
+        "Save as": "Speichern als",
+        "Exit": "Beenden",
+        "Edit": "Bearbeiten",
+        "Undo": "Rückganging machen",
+        "Redo": "Wiederherstellen",
+        "Sketch": "Sketch",
+        "Build": "Bauen",
+        "Upload": "Hochladen",
+        "Dev": "Dev",
+        "Toggle Developer Tools": "Devtools umschalten",
+        "Reload": "Neuladen"
+    },
+    "actions": {
+        "Confirm": "Bestätigen",
+        "Cancel": "Abbrechen"
     }
 }

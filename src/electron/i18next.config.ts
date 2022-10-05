@@ -1,13 +1,24 @@
-import i18n, { loadLanguages } from 'i18next';
+import i18n from 'i18next';
 import fs from 'fs';
 import path from 'path';
 
 const i18nPath = path.resolve(__dirname, '../i18n');
+export const availableLanguages = getAvailableLanguages();
+export default i18n;
 
 function getAvailableLanguages() {
     const langFiles = fs.readdirSync(i18nPath)
         .map(file => file.split('.')[0]);
     return langFiles;
+}
+
+function loadLanguageMetaData() {
+    availableLanguages.forEach(lang => {
+        const languagePath = path.resolve(i18nPath, `${lang}.json`);
+        if (!fs.existsSync(languagePath)) return;
+        const resource = JSON.parse(fs.readFileSync(languagePath).toString());
+        i18n.addResources(lang, 'meta', resource['meta']);
+    })
 }
 
 function loadLanguage(lang: string) {
@@ -20,20 +31,23 @@ function loadLanguage(lang: string) {
 }
 
 i18n.on('languageChanged', (lang) => {
-    if (i18n.getDataByLanguage(lang) == undefined) {
-        loadLanguage(lang);
-    }
+    loadLanguage(lang);
 })
+
+const namespaces = [
+    'menu',
+     'actions'
+]
 
 i18n.init({
     lng: 'en_US',
     fallbackLng: 'en_US',
+    fallbackNS: namespaces,
     ns: [
-        'menu'
+        'meta',
+        ...namespaces
     ]
 });
 
+loadLanguageMetaData();
 loadLanguage('en_US');
-
-export const availableLanguages = getAvailableLanguages();
-export default i18n;

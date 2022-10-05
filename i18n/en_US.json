@@ -1,22 +1,30 @@
 {
+    "meta":{
+        "name": "English",
+        "native_name": "English"
+    },
     "menu": {
-        "fileMenu": "File",
-        "fileMenuNewOption": "New",
-        "fileMenuOpenOption": "Open",
-        "fileMenuExamplesOption": "Examples",
-        "fileMenuLanguageOption": "Language",
-        "fileMenuSaveOption": "Save",
-        "fileMenuSaveAsOption": "Save as",
-        "fileMenuExitOption": "Exit",
-        "editMenu": "Edit",
-        "editMenuUndoOption": "Undo",
-        "editMenuRedoOption": "Redo",
-        "sketchMenu": "Sketch",
-        "sketchMenuBuildOption": "Build",
-        "sketchMenuUploadOption": "Upload",
-        "devMenu": "Dev",
-        "devMenuDevToolsOption": "Toggle Developer Tools",
-        "devMenuReloadOption": "Reload",
-        "devMenuExitOption": "Exit"
+        "File": "File",
+        "New": "New",
+        "Open": "Open",
+        "Close": "Close",
+        "Examples": "Examples",
+        "Settings": "Settings",
+        "Save": "Save",
+        "Save as": "Save as",
+        "Exit": "Exit",
+        "Edit": "Edit",
+        "Undo": "Undo",
+        "Redo": "Redo",
+        "Sketch": "Sketch",
+        "Build": "Build",
+        "Upload": "Upload",
+        "Dev": "Dev",
+        "Toggle Developer Tools": "Toggle Developer Tools",
+        "Reload": "Reload"
+    },
+    "actions": {
+        "Confirm": "Confirm",
+        "Cancel": "Cancel"
     }
 }
