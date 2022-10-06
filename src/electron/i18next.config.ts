@@ -31,12 +31,14 @@ function loadLanguage(lang: string) {
 }
 
 i18n.on('languageChanged', (lang) => {
+    console.log('lang change');
+
     loadLanguage(lang);
 })
 
 const namespaces = [
     'menu',
-     'actions'
+    'actions'
 ]
 
 i18n.init({

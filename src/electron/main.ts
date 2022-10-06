@@ -3,6 +3,7 @@ import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 import i18n from './i18next.config';
 import menuActionMap from './menu';
 import { ipcMain } from 'electron/main';
+import preferences from './preferences';
 
 
 const isDev = process.env.IS_DEV == "true" ? true : false;
@@ -137,10 +138,6 @@ function createWindow() {
       },
    });
 
-   const menu = createMenu();
-
-   Menu.setApplicationMenu(menu);
-
    // and load the index.html of the app.
    // win.loadFile("index.html");
    mainWindow.loadURL(
@@ -161,15 +158,21 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+
 app.whenReady().then(() => {
-   createWindow()
+
+   createWindow();
+
+   preferences.loadSettings();
 
    app.on('activate', function () {
+      //WARN: Might be sketchy with loading of settings and stuff?
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
       if (BrowserWindow.getAllWindows().length === 0) createWindow()
    })
 });
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -180,11 +183,21 @@ app.on('window-all-closed', () => {
    }
 });
 
-ipcMain.handle('change-language', (_e, lang) => {
-   i18n.changeLanguage(lang);
+//TODO: combine all settings into one object that can be saved in one go
+ipcMain.handle('change-language', (_e, language) => {
+   i18n.changeLanguage(language);
+   preferences.saveSettings({
+      language
+   })
 });
 
+i18n.on('languageChanged', () => {
+   const menu = createMenu();
+   Menu.setApplicationMenu(menu);
+})
+
 ipcMain.handle('soft-reload', () => {
+   //TODO: save and restore sketch state
    BrowserWindow.getAllWindows().forEach(window => window.close());
    createWindow();
 })
