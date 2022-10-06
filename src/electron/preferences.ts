@@ -1,7 +1,6 @@
 import { app } from "electron"
 import fs from 'fs';
 import path from 'path';
-import defaultSettings from './defaultSettings.json'
 import i18n from "./i18next.config";
 
 const dataPath = app.getPath('userData');
@@ -34,8 +33,9 @@ async function loadLanguage(language: string) {
 
 async function loadSettingsFile() {
     if (!fs.existsSync(settingsFile)) {
-        saveSettingsFile(defaultSettings);
-        return defaultSettings;
+        const defaults = await import('./DefaultSettings') as Settings;
+        saveSettingsFile({...defaults});
+        return defaults;
     }
 
     const settings = new Promise<Settings>((resolve) => {
