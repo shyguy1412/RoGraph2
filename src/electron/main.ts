@@ -96,6 +96,17 @@ function createMenu(): Menu {
       ]
    }));
 
+   menu.append(new MenuItem({
+      label: i18n.t('Tools'),
+      submenu: [
+         {
+            label: i18n.t('Install Extension') + '...',
+            accelerator: 'f',
+            click: menuActionMap['installExtension']
+         },
+      ]
+   }));
+ 
    //TODO: Tools menu for serial plotter and moniter, port selection, board selection
 
    if (isDev)
@@ -184,7 +195,7 @@ app.on('window-all-closed', () => {
 });
 
 //TODO: combine all settings into one object that can be saved in one go
-ipcMain.handle('change-language', (_e, language) => {
+ipcMain.handle('change-language', (_e, language:string) => {
    i18n.changeLanguage(language);
    preferences.saveSettings({
       language

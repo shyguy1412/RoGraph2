@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog } from "electron";
+import { installExtensionFromZip } from "./ExtensionManager";
 import { availableLanguages } from "./i18next.config";
 
 function newSketch() {
@@ -53,6 +54,18 @@ function uploadSketch() {
     throw new Error("Function not implemented.");
 }
 
+async function installExtension() {
+    //open file explorer
+    const result = await dialog.showOpenDialog({
+        properties: [
+            'openFile',
+        ]
+    })
+    //send selected file to extension manager
+    if(result.canceled) return;
+    await installExtensionFromZip(result.filePaths[0]);
+}
+
 function exit() {
     app.quit();
 }
@@ -70,4 +83,5 @@ export default {
     buildSketch,
     uploadSketch,
     exit,
+    installExtension,
 };

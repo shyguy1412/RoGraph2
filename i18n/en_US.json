@@ -19,6 +19,8 @@
         "Sketch": "Sketch",
         "Build": "Build",
         "Upload": "Upload",
+        "Tools": "Tools",
+        "Install Extension": "Install Extension",
         "Dev": "Dev",
         "Toggle Developer Tools": "Toggle Developer Tools",
         "Reload": "Reload"

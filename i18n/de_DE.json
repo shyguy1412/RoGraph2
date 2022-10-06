@@ -19,6 +19,8 @@
         "Sketch": "Sketch",
         "Build": "Bauen",
         "Upload": "Hochladen",
+        "Tools": "Werkzeuge",
+        "Install Extension": "Erweiterungen installieren",
         "Dev": "Dev",
         "Toggle Developer Tools": "Devtools umschalten",
         "Reload": "Neuladen"

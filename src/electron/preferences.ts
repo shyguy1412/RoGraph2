@@ -2,13 +2,17 @@ import { app } from "electron"
 import fs from 'fs';
 import path from 'path';
 import i18n from "./i18next.config";
+import DefaultSettings from "./DefaultSettings";
+type Settings = typeof DefaultSettings;
 
 const dataPath = app.getPath('userData');
 const settingsFile = path.resolve(dataPath, 'settings.json');
 
-interface Settings{
-    language?: string
+if (!fs.existsSync(settingsFile)) {
+    fs.writeFileSync(settingsFile, JSON.stringify(DefaultSettings));
 }
+
+let globalSettings = loadSettingsFile();
 
 const loadSetting: any = {
     language: loadLanguage
@@ -31,39 +35,25 @@ async function loadLanguage(language: string) {
 }
 
 
-async function loadSettingsFile() {
-    if (!fs.existsSync(settingsFile)) {
-        const defaults = await import('./DefaultSettings') as Settings;
-        saveSettingsFile({...defaults});
-        return defaults;
-    }
+function loadSettingsFile() {
 
-    const settings = new Promise<Settings>((resolve) => {
-        fs.readFile(settingsFile, {}, (_e, data) => {
-            try {
-                resolve(<Settings>JSON.parse(data.toString()));
-            } catch (e) {
-                console.error(e);
-            }
-        })
-    });
+    const buffer = fs.readFileSync(settingsFile);
+    const settings = <Settings>JSON.parse(buffer.toString())
 
     return settings;
 }
 
 
-async function saveSettingsFile(settings: Settings) {
-    //load current settings
-    const currentSettings = await loadSettingsFile();
+async function saveSettings(settings: Partial<Settings>) {
 
     //update settings
     Object.keys(settings).forEach(setting => {
-        currentSettings[<keyof Settings>setting] = settings[<keyof Settings>setting];
+        globalSettings[<keyof Settings>setting] = settings[<keyof Settings>setting]!;
     });
 
     //save updated settings
     return new Promise<void>((resolve) => {
-        fs.writeFile(settingsFile, JSON.stringify(settings), {}, () => {
+        fs.writeFile(settingsFile, JSON.stringify(globalSettings), {}, () => {
             resolve();
         })
     });
@@ -71,5 +61,8 @@ async function saveSettingsFile(settings: Settings) {
 
 export default {
     loadSettings,
-    saveSettings: saveSettingsFile,
+    saveSettings,
+    get settings() {
+        return JSON.parse(JSON.stringify(globalSettings)) as Settings;
+    }
 }
