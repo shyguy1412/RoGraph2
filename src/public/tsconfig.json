@@ -18,5 +18,5 @@
       "@svg/*": ["public/svg/*"],
     }
   },
-  "include": ["./**/*.ts"],
+  "include": ["./**/*.ts", "../shared/**/*.ts"],
 }

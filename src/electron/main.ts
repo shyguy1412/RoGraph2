@@ -4,6 +4,7 @@ import i18n from './i18next.config';
 import menuActionMap from './menu';
 import { ipcMain } from 'electron/main';
 import preferences from './preferences';
+import ExtensionManager, { loadExtensions } from './ExtensionManager';
 
 
 const isDev = process.env.IS_DEV == "true" ? true : false;
@@ -96,6 +97,7 @@ function createMenu(): Menu {
       ]
    }));
 
+   //TODO:serial plotter and moniter, port selection, board selection
    menu.append(new MenuItem({
       label: i18n.t('Tools'),
       submenu: [
@@ -106,8 +108,7 @@ function createMenu(): Menu {
          },
       ]
    }));
- 
-   //TODO: Tools menu for serial plotter and moniter, port selection, board selection
+
 
    if (isDev)
       menu.append(new MenuItem({
@@ -134,7 +135,7 @@ function createMenu(): Menu {
 }
 
 function createWindow() {
-   
+
    // Create the browser window.
    const width = 900;
    const height = 700;
@@ -162,19 +163,28 @@ function createWindow() {
    }
 
    mainWindow.webContents.once('did-finish-load', () => {
-      mainWindow.webContents.send('set-language', i18n.language);      
+      mainWindow.webContents.send('set-language', i18n.language);
    })
+   return mainWindow;
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
 
-   createWindow();
+   await preferences.loadSettings();
+   const mainWindow = createWindow();
 
-   preferences.loadSettings();
+   loadExtensions()
+      .then((extensions) => {
+         console.log(JSON.stringify(extensions));
+         extensions.forEach(extension => {
+            mainWindow.webContents.send('load-extension', extension)
+         })
+
+      });
 
    app.on('activate', function () {
       //WARN: Might be sketchy with loading of settings and stuff?
@@ -195,7 +205,7 @@ app.on('window-all-closed', () => {
 });
 
 //TODO: combine all settings into one object that can be saved in one go
-ipcMain.handle('change-language', (_e, language:string) => {
+ipcMain.handle('change-language', (_e, language: string) => {
    i18n.changeLanguage(language);
    preferences.saveSettings({
       language

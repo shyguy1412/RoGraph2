@@ -28,11 +28,11 @@ function loadLanguage(lang: string) {
     Object.keys(resource).forEach(ns => {
         i18n.addResources(lang, ns, resource[ns]);
     })
+    //TODO: load extension aswell
 }
 
 i18n.on('languageChanged', (lang) => {
-    console.log('lang change');
-
+    //NOTE: Optimization possible, langs dont need to be loaded multiple times
     loadLanguage(lang);
 })
 

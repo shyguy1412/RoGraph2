@@ -16,7 +16,6 @@ export class SettingsDialog extends CustomElement {
             <div class="settings-content">
                 <select name="language-select" id="language-select">
                 ${function () {
-                console.log(i18n.currentLanguage);
                 return i18n.languages.reduce((prev, cur) => {
                     const name = i18n.t('name', 'meta', cur);
                     console.log(name, cur);
