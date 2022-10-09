@@ -1,6 +1,10 @@
 import { CustomElement } from "./CustomElement";
 
-export class MenuBar extends CustomElement {
+export class TabBar extends CustomElement {
+
+    get activeMenu(){
+        return this.shadowRoot!.querySelector('.selected');
+    }
 
     html(): string {
         return /*html*/`
@@ -13,9 +17,9 @@ export class MenuBar extends CustomElement {
         `
     }
     applyListeners(): void {
-        this.querySelectorAll('.menu-icon').forEach(icon => {
+        this.shadowRoot!.querySelectorAll('.menu-icon').forEach(icon => {
             icon.addEventListener('click', () => {
-                [...this.querySelectorAll('.menu-icon')]
+                [...this.shadowRoot!.querySelectorAll('.menu-icon')]
                     .filter((el) => el != icon)
                     .forEach(icon => icon.classList.remove('selected'));
                 icon.classList.toggle('selected');

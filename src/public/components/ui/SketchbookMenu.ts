@@ -9,7 +9,6 @@ export class SketchbookMenu extends Menu {
     }
 
     applyListeners(): void {
-        this.attach(document.querySelector('#sketchbook-icon')!)
     }
 
 

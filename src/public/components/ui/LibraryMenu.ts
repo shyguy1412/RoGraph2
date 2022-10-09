@@ -9,7 +9,6 @@ export class LibraryMenu extends Menu {
     }
 
     applyListeners(): void {
-        this.attach(document.querySelector('#library-icon')!)
     }
 
 }

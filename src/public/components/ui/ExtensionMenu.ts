@@ -1,7 +1,7 @@
 import { Menu } from "./Menu";
 
-export class ExtensionMenu extends Menu{
-    
+export class ExtensionMenu extends Menu {
+
     html(): string {
         return /* */`
         EXTENSION MENU
@@ -9,7 +9,6 @@ export class ExtensionMenu extends Menu{
     }
 
     applyListeners(): void {
-        this.attach(document.querySelector('#extension-icon')!)
     }
 
 

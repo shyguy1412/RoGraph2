@@ -3,7 +3,7 @@ import { RoGraphWrapBlock } from '@rograph/blocks/RoGraphWrapBlock';
 import { RoGraphCanvas } from '@rograph/RoGraphCanvas';
 import { RoGraphStack } from '@rograph/RoGraphStack';
 import RegisterUI from '@ui/RegisterUI';
-import { RoGraphMenu } from '@ui/RographMenu';
+import { SideMenu } from '@ui/SideMenu';
 import { SettingsDialog } from './components/ui/SettingsDialog';
 
 RegisterUI();
@@ -12,7 +12,7 @@ const app = document.querySelector('#app')!;
 
 const canvas = RoGraphCanvas.create()
 
-const menu = RoGraphMenu.create();
+const menu = SideMenu.create();
 
 //create app structure
 app.appendChild(menu);

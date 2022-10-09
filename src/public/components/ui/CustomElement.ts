@@ -12,12 +12,15 @@ export abstract class CustomElement extends HTMLElement {
     constructor() {
         super();
 
-        setTimeout(() => {
-            console.log(this);
-            
-            this.innerHTML = this.html();
-            this.applyListeners();
-        }, 0)
+        const shadow = this.attachShadow({
+            mode: 'open'
+        })
+
+        shadow.innerHTML = this.html();
+        shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/ui/${this.constructor.name}.css" />`
+        shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/style.css" />`
+
+        this.applyListeners();
     }
 
     abstract html():string;

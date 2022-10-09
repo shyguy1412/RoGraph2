@@ -9,7 +9,6 @@ export class BlockMenu extends Menu{
     }
 
     applyListeners(): void {
-        this.attach(document.querySelector('#block-icon')!)
     }
 
 }
