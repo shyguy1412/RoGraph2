@@ -25,8 +25,6 @@ export abstract class RoGraphBlock extends RoGraphElement {
 
         const observer = new MutationObserver((mutations) => {
             const relevantMutations = mutations.filter(mutation => this.slots.includes(<RoGraphSlot>mutation.target))  
-            console.log(relevantMutations);
-
             relevantMutations.forEach(mutation => this.slotUpdate(<RoGraphSlot>mutation.target));
         });
 

@@ -9,9 +9,9 @@ import ExtensionManager, { loadExtensions } from './ExtensionManager';
 
 const isDev = process.env.IS_DEV == "true" ? true : false;
 
-if (isDev) require('electron-reload')(__dirname, {
-   electron: require(path.resolve(__dirname, '../../..', 'node_modules/electron'))
-});
+// if (isDev) require('electron-reload')(__dirname, {
+//    electron: require(path.resolve(__dirname, '../../..', 'node_modules/electron'))
+// });
 
 function createMenu(): Menu {
    const menu = new Menu()
