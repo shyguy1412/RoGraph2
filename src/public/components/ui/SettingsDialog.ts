@@ -63,5 +63,3 @@ export class SettingsDialog extends CustomElement {
     }
 
 }
-
-registerComponent(SettingsDialog);

@@ -3,6 +3,5 @@ rg-canvas {
     position: relative;
     width: 100%;
     height: 100%;
-    background: lightgray;
-    border-left: 3px solid gray;
+    background: var(--clr-canvas-bg);
 }

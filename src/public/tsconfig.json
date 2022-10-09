@@ -16,6 +16,7 @@
     "paths": {
       "@rograph/*": ["public/components/rograph/*"],
       "@svg/*": ["public/svg/*"],
+      "@ui/*": ["public/components/ui/*"]
     }
   },
   "include": ["./**/*.ts", "../shared/**/*.ts"],

@@ -3,15 +3,17 @@
 @import url('./font-awesome/css/all.min.css');
 
 :root{
+    --color-primary: rgb(252, 196, 25);
     --modal-backdrop: rgba(0, 0, 0, 0.5);
     --settings-background: white;
-    --color-primary: rgb(252, 196, 25);
+    --clr-menu-highlight: hsl(0, 0%, 30%);
+    --clr-menu-icon: hsl(0, 0%, 30%);
+    --clr-menu-bg: hsl(0, 0%, 90%);
+    --clr-canvas-bg: hsl(0, 0%, 95%);
 }
 
 #app {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 300px auto;
+    display: flex;
 }
 
 #app,

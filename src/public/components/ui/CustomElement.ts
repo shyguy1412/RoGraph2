@@ -5,12 +5,19 @@ interface CustomElementConstructor {
 
 export abstract class CustomElement extends HTMLElement {
     static get tag() {
-        return this.name.split(/(?=[A-Z])/).map(s => s.toLowerCase()).join('-');
+        return this.name.split(/(?=[A-Z][a-z]*$)/).map(s => s.toLowerCase()).join('-');
     }
 
     //runs when element is created with create()
     constructor() {
         super();
+
+        setTimeout(() => {
+            console.log(this);
+            
+            this.innerHTML = this.html();
+            this.applyListeners();
+        }, 0)
     }
 
     abstract html():string;
@@ -23,8 +30,6 @@ export abstract class CustomElement extends HTMLElement {
         if (!window.customElements.get(tag)) throw new Error(`[CustomElement] ${tag} is not a registered component`)
 
         const el = document.createElement(tag) as T;
-        el.innerHTML = el.html();
-        el.applyListeners();
         return el;
     }
 

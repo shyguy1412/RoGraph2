@@ -12,6 +12,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@rograph": resolve(__dirname, "src/public/components/rograph"),
+      "@ui": resolve(__dirname, "src/public/components/ui"),
       "@svg": resolve(__dirname, "src/public/svg"),
     }
   },
