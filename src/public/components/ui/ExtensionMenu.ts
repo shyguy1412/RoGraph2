@@ -2,7 +2,7 @@ import { Menu } from "./Menu";
 
 export class ExtensionMenu extends Menu {
 
-    html(): string {
+    menuHtml(): string {
         return /* */`
         EXTENSION MENU
         `

@@ -2,7 +2,7 @@ import { Menu } from "./Menu";
 
 export class SketchbookMenu extends Menu {
 
-    html(): string {
+    menuHtml(): string {
         return /* */`
         SKETCHBOOK MENU
         `

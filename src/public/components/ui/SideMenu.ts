@@ -10,7 +10,6 @@ export class SideMenu extends CustomElement {
                 <tab-bar></tab-bar>
                 <block-menu></block-menu>
                 <sketchbook-menu></sketchbook-menu>
-                <library-menu></library-menu>
                 <extension-menu></extension-menu>
             </div>
         `
@@ -22,8 +21,7 @@ export class SideMenu extends CustomElement {
 
         this.shadowRoot!.querySelector<Menu>('block-menu')!.attach(menuButtons[0]);
         this.shadowRoot!.querySelector<Menu>('sketchbook-menu')!.attach(menuButtons[1]);
-        this.shadowRoot!.querySelector<Menu>('library-menu')!.attach(menuButtons[2]);
-        this.shadowRoot!.querySelector<Menu>('extension-menu')!.attach(menuButtons[3]);
+        this.shadowRoot!.querySelector<Menu>('extension-menu')!.attach(menuButtons[2]);
     }
 
 }

@@ -17,8 +17,8 @@ export abstract class CustomElement extends HTMLElement {
         })
 
         shadow.innerHTML = this.html();
-        shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/ui/${this.constructor.name}.css" />`
         shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/style.css" />`
+        shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/ui/${this.constructor.name}.css" />`
 
         this.applyListeners();
     }
