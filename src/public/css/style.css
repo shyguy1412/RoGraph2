@@ -24,3 +24,13 @@ body {
 .menu{
     width: 300px;
 }
+
+settings-dialog {
+    position: absolute;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--modal-backdrop);
+    justify-content: center;
+    align-items: center;
+}

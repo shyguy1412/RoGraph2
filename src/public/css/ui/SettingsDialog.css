@@ -1,27 +1,17 @@
-settings-dialog {
-    position: absolute;
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--modal-backdrop);
-    justify-content: center;
-    align-items: center;
-}
-
-settings-dialog .settings {
+.settings {
     width: 750px;
     background-color: var(--settings-background);
     padding: 1em;
 }
 
-settings-dialog .settings-title {
+.settings-title {
     display: flex;
     position: relative;
     justify-content: space-between;
     margin-bottom: 1em;
 }
 
-settings-dialog .settings-title::after {
+.settings-title::after {
     content: '';
 
     --thickness: 3px;
@@ -37,7 +27,7 @@ settings-dialog .settings-title::after {
     left: 0;
 }
 
-settings-dialog .settings-control{
+.settings-control{
     margin-top: 1em;
     display: flex;
     justify-content: right;

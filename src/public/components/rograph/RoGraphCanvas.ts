@@ -5,8 +5,6 @@ export class RoGraphCanvas extends RoGraphElement {
 
     init(): void {
         //event listeners for mouse interaction
-        console.log('AA');
-        
         this.addEventListener('mousedown', (e) => {
             console.log(e);
             

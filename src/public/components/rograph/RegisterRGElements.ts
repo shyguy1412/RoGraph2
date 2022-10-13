@@ -7,8 +7,6 @@ import { RoGraphScope } from "./RoGraphScope";
 import { RoGraphStack } from "./RoGraphStack";
 
 export default function(){
-    console.log('RG');
-    
     registerComponent(RoGraphStackBlock);
     registerComponent(RoGraphWrapBlock);
     registerComponent(RoGraphCanvas);

@@ -16,13 +16,13 @@ app.innerHTML = /*html*/`
 `
 
 IPC.onMessage('open-settings', () => {
-    // app.appendChild(SettingsDialog.create());
+  app.innerHTML += /*html*/`<settings-dialog></settings-dialog>`
 });
 
 IPC.onMessage('set-language', (_e, lang) => {
-    i18n.setLanguage(lang);
+  i18n.setLanguage(lang);
 });
 
 IPC.onMessage('load-extension', (_e, extension) => {
-    console.log(extension);
+  console.log(extension);
 });

@@ -11,7 +11,6 @@ export abstract class RoGraphElement extends HTMLElement {
     //runs when element is created with create()
     constructor() {
         super();
-        console.log(this.constructor.name);
         
         setTimeout(_ => {
             this.init();

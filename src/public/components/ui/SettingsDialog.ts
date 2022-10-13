@@ -18,8 +18,6 @@ export class SettingsDialog extends CustomElement {
                 ${function () {
                 return i18n.languages.reduce((prev, cur) => {
                     const name = i18n.t('name', 'meta', cur);
-                    console.log(name, cur);
-
                     const nativeName = i18n.t('native_name', 'meta', cur);
                     return prev + /* html */`
                             <option ${cur == i18n.currentLanguage() ? 'selected' : ''} value="${cur}">
@@ -39,13 +37,13 @@ export class SettingsDialog extends CustomElement {
     }
 
     applyListeners() {
-        this.querySelector('#close-button')?.addEventListener('click', () => {
+        this.shadowRoot?.querySelector('#close-button')?.addEventListener('click', () => {
             this.remove();
         });
-        this.querySelector('#cancel-button')?.addEventListener('click', () => {
+        this.shadowRoot?.querySelector('#cancel-button')?.addEventListener('click', () => {
             this.remove();
         });
-        this.querySelector('#confirm-button')?.addEventListener('click', async () => {
+        this.shadowRoot?.querySelector('#confirm-button')?.addEventListener('click', async () => {
             await this.confirmSettings();
             IPC.reloadApp();
         });
