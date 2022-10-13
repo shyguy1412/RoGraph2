@@ -7,5 +7,3 @@ export class RoGraphValueSlot extends RoGraphSlot {
     }
 
 }
-
-registerComponent(RoGraphValueSlot);

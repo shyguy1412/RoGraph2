@@ -16,47 +16,26 @@ export class RoGraphStack extends RoGraphScope {
 
     // Getters and Setters for position
     set x(x: number) {
-        this.setAttribute('x', x.toString());
+        this.style.left = x + 'px';
     }
+
     get x() {
-        return Number.parseInt(this.getAttribute('x')!);
+        return Number.parseInt(this.style.left || '0');
     };
 
     set y(y: number) {
-        this.setAttribute('y', y.toString());
+        this.style.top = y + 'px';
     }
+
     get y() {
-        return Number.parseInt(this.getAttribute('y')!);
+        return Number.parseInt(this.style.top || '0');
     };
 
     //if block is currently attached to the mouse
     attached = false;
 
-    //Initilise new stack
-    init(): void {
-        super.init();
-        //sync position with style
-        this.observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation, i) => {
-                if (mutation.type != 'attributes') return;
-                const element = mutation.target as HTMLElement;
-                if (mutation.attributeName == 'x')
-                    element.style.setProperty('--pos-x', element.getAttribute('x'));
-                if (mutation.attributeName == 'y')
-                    element.style.setProperty('--pos-y', element.getAttribute('y'));
-            });
-            if (this.childElementCount == 0) this.remove();
-        });
-
-        this.observer.observe(this, {
-            attributes: true,
-            childList: true
-        });
-
-
-        //initilize position and offset
-        this.x = 0;
-        this.y = 0;
+    constructor() {
+        super();
         this.offset = {
             x: 0,
             y: 0
@@ -64,12 +43,14 @@ export class RoGraphStack extends RoGraphScope {
     }
 
     //picks up a stack
-    pickUpStack(e: MouseEvent) {
+    pickUp(e: MouseEvent) {
         this.attach(e);
 
         //stacks should be ordered by interaction
         const canvas = document.querySelector("rg-canvas") as HTMLElement;
-        canvas.appendChild(this);
+
+        if (canvas.lastChild != this)
+            canvas.appendChild(this);
     }
 
     dropStack(e: MouseEvent) {
@@ -89,45 +70,27 @@ export class RoGraphStack extends RoGraphScope {
 
         const stackBounds = this.getBoundingClientRect();
 
-        // //get all blocks
-        // const blocks =
-        //     [...this.canvas.querySelectorAll<RoGraphBlock>('rg-stack .rg-block')]
-        //         .filter(block => ![...this.children].includes(block)); //filter out this stack
-
-        // for (const block of blocks) {
-        //     const blockBounds = this.getBoundingClientRect();
-        //     //check all slots
-        //     for (const slot of block.slots ?? []) {
-        //         const slotBounds = slot.getBoundingClientRect();
-        //         const distance = dist(stackBounds.x, stackBounds.y, slotBounds.x, slotBounds.y);
-        //         if (distance < RoGraphStack.connectionThreshold) {
-        //             slot.connectStack(this);
-        //             return;
-        //         }
-        //     }
-        // }
-
         //get all scopes
         const scopes = [...this.canvas.querySelectorAll<RoGraphScope>('.rg-scope')]
-        .filter(scope => scope != this); //filter out this stack
+            .filter(scope => scope != this); //filter out this stack
 
-        for(const scope of scopes){
+        for (const scope of scopes) {
             const scopeBounds = scope.getBoundingClientRect();
 
             const distTopToBottom = dist(stackBounds.x, stackBounds.top, scopeBounds.x, scopeBounds.bottom);
             const distBottomToTop = dist(stackBounds.x, stackBounds.bottom, scopeBounds.x, scopeBounds.top);
 
-            if(distTopToBottom < RoGraphScope.connectionThreshold){
+            if (distTopToBottom < RoGraphScope.connectionThreshold) {
                 const children = [...this.children];
                 scope.append(...children);
                 this.remove();
                 return;
             }
 
-            if(distBottomToTop < RoGraphScope.connectionThreshold && scope instanceof RoGraphStack){
+            if (distBottomToTop < RoGraphScope.connectionThreshold && scope instanceof RoGraphStack) {
                 const children = [...this.children];
                 scope.prepend(...children);
-                if(scope instanceof RoGraphStack){
+                if (scope instanceof RoGraphStack) {
                     scope.y -= stackBounds.height;
                 }
                 this.remove();
@@ -143,12 +106,13 @@ export class RoGraphStack extends RoGraphScope {
         const canvas = document.querySelector('rg-canvas')!.getBoundingClientRect();
         this.x = e.clientX - this.offset.x - canvas.x;
         this.y = e.clientY - this.offset.y - canvas.y;
+
     }
 
     /**
      * forces the stack to attach to mouse
      */
-    attach(e: MouseEvent) {
+    private attach(e: MouseEvent) {
         const canvas = document.querySelector("rg-canvas")!.getBoundingClientRect();
         this.offset.x = e.clientX - this.x - canvas.x;
         this.offset.y = e.clientY - this.y - canvas.y;
@@ -168,4 +132,3 @@ export class RoGraphStack extends RoGraphScope {
     }
 }
 
-registerComponent(RoGraphStack);

@@ -11,6 +11,11 @@ export abstract class RoGraphElement extends HTMLElement {
     //runs when element is created with create()
     constructor() {
         super();
+        console.log(this.constructor.name);
+        
+        setTimeout(_ => {
+            this.init();
+        }, 0);
     }
 
     //initilise component after creation
@@ -23,8 +28,6 @@ export abstract class RoGraphElement extends HTMLElement {
         if (!window.customElements.get(tag)) throw new Error(`[RoGraph] ${tag} is not a registered component`)
 
         const el = document.createElement(tag) as T;
-        if (el.init instanceof Function) el.init();
-        else throw new Error('[RoGraph] Init not defined on ' + el.constructor.name);
         return el;
     }
 

@@ -29,5 +29,3 @@ export class RoGraphWrapBlock extends RoGraphBlock {
         this.svg.updateShape();
     }
 }
-
-registerComponent(RoGraphWrapBlock);

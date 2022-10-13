@@ -5,17 +5,21 @@ export class RoGraphCanvas extends RoGraphElement {
 
     init(): void {
         //event listeners for mouse interaction
+        console.log('AA');
+        
         this.addEventListener('mousedown', (e) => {
+            console.log(e);
+            
             if (e.button) return;
             //find clicked element
             const target = e.composedPath().find(el => el instanceof RoGraphElement) as RoGraphElement;
             if(target == this) return;
             //if clicked element is the head of a stack, pick up the stack
             if (!target.previousSibling && target.parentElement instanceof RoGraphStack)
-                target.parentElement.pickUpStack(e);
+                target.parentElement.pickUp(e);
 
             //else, get element and all it's siblings to create new stack
-            else this.createNewStack(target).attach(e);
+            else this.createNewStack(target).pickUp(e);
 
         })
 
@@ -60,4 +64,3 @@ export class RoGraphCanvas extends RoGraphElement {
     }
 }
 
-registerComponent(RoGraphCanvas);

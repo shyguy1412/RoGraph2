@@ -19,5 +19,3 @@ export class RoGraphStackBlock extends RoGraphBlock {
     }
 
 }
-
-registerComponent(RoGraphStackBlock);

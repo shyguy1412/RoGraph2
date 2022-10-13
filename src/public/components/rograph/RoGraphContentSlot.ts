@@ -7,5 +7,3 @@ export class RoGraphContentSlot extends RoGraphSlot {
         this.style.top = (this.pos?.y || 0) + 'px';
     }
 }
-
-registerComponent(RoGraphContentSlot);

@@ -9,5 +9,3 @@ export class RoGraphScope extends RoGraphElement {
     }
 
 }
-
-registerComponent(RoGraphScope);
