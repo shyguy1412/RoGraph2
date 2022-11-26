@@ -3,11 +3,3 @@ rg-wrapblock {
     position: relative;
     line-height: 0;
 }
-
-rg-wrapblock > .wrap-content{
-    left: 20px;
-    top: 35px;
-    display: block;
-    position: absolute;
-    line-height: 0;
-}

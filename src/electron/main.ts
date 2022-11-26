@@ -162,9 +162,6 @@ function createWindow() {
       mainWindow.webContents.openDevTools();
    }
 
-   mainWindow.webContents.once('did-finish-load', () => {
-      mainWindow.webContents.send('set-language', i18n.language);
-   })
    return mainWindow;
 }
 
@@ -177,14 +174,20 @@ app.whenReady().then(async () => {
    await preferences.loadSettings();
    const mainWindow = createWindow();
 
-   loadExtensions()
-      .then((extensions) => {
-         console.log(JSON.stringify(extensions));
-         extensions.forEach(extension => {
-            mainWindow.webContents.send('load-extension', extension)
-         })
+   mainWindow.webContents.once('did-finish-load', () => {
+      mainWindow.webContents.send('set-language', i18n.language);
+      loadExtensions()
+         .then((extensions) => {
+            // console.log(JSON.stringify(extensions));
+            extensions.forEach(extension => {
+               console.log(extension);
 
-      });
+               mainWindow.webContents.send('load-extension', extension)
+            })
+
+         });
+   })
+
 
    app.on('activate', function () {
       //WARN: Might be sketchy with loading of settings and stuff?

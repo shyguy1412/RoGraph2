@@ -7,14 +7,16 @@ export abstract class RoGraphElement extends HTMLElement {
     static get tag() {
         return this.name.toLowerCase().replace('rograph', 'rg-');
     }
+    private isInit = false;
 
     //runs when element is created with create()
     constructor() {
         super();
-        
-        setTimeout(_ => {
-            this.init();
-        }, 0);
+    }
+
+    connectedCallback() {
+        if(!this.isInit)this.init();
+        this.isInit = true;
     }
 
     //initilise component after creation

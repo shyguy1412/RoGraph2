@@ -10,12 +10,9 @@ const strokeWidth = 3
 const width = 150;
 const height = 40;
 
-let num = 0;
-
 export class StackBlockSVG extends RoGraphSVG {
 
     draw() {
-        num++;
         this.width = width;
         this.height = height;
 
@@ -45,8 +42,6 @@ export class StackBlockSVG extends RoGraphSVG {
         .fill(fill)
         .stroke(stroke)
         .strokeWidth(strokeWidth);
-
-        this.text(num + '', 10, 25);
 
     }
 }

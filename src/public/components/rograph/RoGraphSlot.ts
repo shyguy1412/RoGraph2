@@ -6,12 +6,6 @@ export abstract class RoGraphSlot extends RoGraphScope {
     pos: { x: number, y: number } | null = null;
     parent: RoGraphElement | null = null;
 
-    // connectScope(stack: RoGraphStack): void {
-    //     const blocks = [...stack.children].reverse();
-    //     this.prepend(...blocks);
-    //     console.log('TRUE');
-
-    // }
 
     for(parent: typeof this.parent) {
         this.parent = parent;
@@ -27,7 +21,7 @@ export abstract class RoGraphSlot extends RoGraphScope {
 
     init(): void {
         super.init();
-        this.classList.add('rg-slot');
+        // this.classList.add('rg-slot');
     }
     
     abstract updateClientPosition():void;

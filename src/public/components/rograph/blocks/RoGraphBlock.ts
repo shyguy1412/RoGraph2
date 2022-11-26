@@ -12,26 +12,29 @@ export abstract class RoGraphBlock extends RoGraphElement {
     constructor() {
         super();
         this.svg = this.defineSVG();
-
-        const shadow = this.attachShadow({ mode: 'closed' });
-        shadow.innerHTML += '<slot></slot>'
-        shadow.appendChild(this.svg);
-    }
-
-    init(): void {
-        this.classList.add('rg-block');
-        const slots = [...this.defineSlots()];
-        this.append(...slots);
-
+        
         const observer = new MutationObserver((mutations) => {
             const relevantMutations = mutations.filter(mutation => this.slots.includes(<RoGraphSlot>mutation.target))  
             relevantMutations.forEach(mutation => this.slotUpdate(<RoGraphSlot>mutation.target));
         });
-
+    
         observer.observe(this, {
             childList: true,
             subtree: true
         });
+
+        const slots = this.defineSlots();
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/style.css" />`;
+        shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/rograph/${this.constructor.name}.css" />`;
+        shadow.appendChild(this.svg);
+        shadow.append(...slots);
+        slots.forEach((slot, index) => slot.innerHTML += /*html*/`<slot name='slot${index}'></slot>`)
+    }
+
+    init(): void {
+        this.classList.add('rg-block');
     }
 
     abstract defineSlots(): RoGraphSlot[];

@@ -9,11 +9,14 @@ const app = document.querySelector('#app')!;
 app.innerHTML = /*html*/`
 <side-menu></side-menu>
 <rg-canvas>
-  <rg-stack>
-    <rg-stackblock></rg-stackblock>
+  <rg-stack x=100 y=100>
+    <rg-stackblock type="com.xisio.robat#action.1"></rg-stackblock>
+    <rg-wrapblock type="net.nasram.rograph#logic.1">
+      <rg-stackblock slot='slot0' type="com.xisio.robat#action.2"></rg-stackblock>
+    </rg-wrapblock>
   </rg-stack>
 </rg-canvas>
-`
+`;
 
 IPC.onMessage('open-settings', () => {
   app.innerHTML += /*html*/`<settings-dialog></settings-dialog>`

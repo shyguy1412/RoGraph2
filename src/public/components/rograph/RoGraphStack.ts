@@ -1,4 +1,5 @@
 import { dist } from '../../assets/functions';
+import { RoGraphWrapBlock } from './blocks/RoGraphWrapBlock';
 import { registerComponent } from './RoGraphElement';
 import { RoGraphScope } from './RoGraphScope';
 
@@ -8,7 +9,6 @@ import { RoGraphScope } from './RoGraphScope';
 export class RoGraphStack extends RoGraphScope {
     //Mouse offset to stack origin at the start of drag
     offset!: { x: number; y: number; };
-    private observer!: MutationObserver;
 
     get canvas() {
         return this.parentElement!;
@@ -34,12 +34,31 @@ export class RoGraphStack extends RoGraphScope {
     //if block is currently attached to the mouse
     attached = false;
 
-    constructor() {
-        super();
+    init(): void {
         this.offset = {
             x: 0,
             y: 0
         }
+        
+        const x = this.getAttribute('x') as number | null;
+        const y = this.getAttribute('y') as number | null;
+        this.x = x ?? this.x;
+        this.y = y ?? this.y;
+      
+        const observer = new MutationObserver((mutations: MutationRecord[]) => {
+            const x = this.getAttribute('x') as number | null;
+            const y = this.getAttribute('y') as number | null;
+
+            if (mutations[0].attributeName != 'style') {
+                this.x = x ?? this.x;
+                this.y = y ?? this.y;
+            } else if (x != this.x || y != this.y) {
+                this.setAttribute('x', this.x + '');
+                this.setAttribute('y', this.y + '');
+            }
+        })
+
+        observer.observe(this, { attributes: true, subtree: false, childList: false });
     }
 
     //picks up a stack
@@ -71,8 +90,19 @@ export class RoGraphStack extends RoGraphScope {
         const stackBounds = this.getBoundingClientRect();
 
         //get all scopes
-        const scopes = [...this.canvas.querySelectorAll<RoGraphScope>('.rg-scope')]
+        const scopes = [...this.canvas.querySelectorAll<RoGraphScope>('rg-stack')]
             .filter(scope => scope != this); //filter out this stack
+
+        const contentSlots: RoGraphScope[] = [];
+
+        this.canvas.querySelectorAll<RoGraphWrapBlock>('rg-wrapblock').forEach(block => {
+            
+            
+            contentSlots.push(...block.shadowRoot!.querySelectorAll<RoGraphScope>('rg-contentslot'))
+        })
+
+        console.log(contentSlots);
+        
 
         for (const scope of scopes) {
             const scopeBounds = scope.getBoundingClientRect();
@@ -106,7 +136,6 @@ export class RoGraphStack extends RoGraphScope {
         const canvas = document.querySelector('rg-canvas')!.getBoundingClientRect();
         this.x = e.clientX - this.offset.x - canvas.x;
         this.y = e.clientY - this.offset.y - canvas.y;
-
     }
 
     /**
@@ -116,6 +145,7 @@ export class RoGraphStack extends RoGraphScope {
         const canvas = document.querySelector("rg-canvas")!.getBoundingClientRect();
         this.offset.x = e.clientX - this.x - canvas.x;
         this.offset.y = e.clientY - this.y - canvas.y;
+        
         this.attached = true;
     }
 
@@ -128,7 +158,6 @@ export class RoGraphStack extends RoGraphScope {
 
     deleteStack() {
         this.remove();
-        this.observer.disconnect();
     }
 }
 

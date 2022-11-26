@@ -6,18 +6,19 @@ export class RoGraphCanvas extends RoGraphElement {
     init(): void {
         //event listeners for mouse interaction
         this.addEventListener('mousedown', (e) => {
-            console.log(e);
-            
+
             if (e.button) return;
             //find clicked element
             const target = e.composedPath().find(el => el instanceof RoGraphElement) as RoGraphElement;
-            if(target == this) return;
+            if (target == this) return;
             //if clicked element is the head of a stack, pick up the stack
-            if (!target.previousSibling && target.parentElement instanceof RoGraphStack)
+            if (!target.previousElementSibling && target.parentElement instanceof RoGraphStack) {
                 target.parentElement.pickUp(e);
-
+            }
             //else, get element and all it's siblings to create new stack
-            else this.createNewStack(target).pickUp(e);
+            else {
+                this.createNewStack(target).pickUp(e);
+            }
 
         })
 
@@ -51,12 +52,12 @@ export class RoGraphCanvas extends RoGraphElement {
         //-3 offset needed, not yet clear why
         stack.x = bounds.x - canvasBounds.x - 3;
         stack.y = bounds.y - canvasBounds.y;
-        let iterator: ChildNode | null = target;
+        let iterator: Element | null = target;
         while (iterator != null) {
-            const next:ChildNode|null = iterator.nextSibling;
+            const next: Element | null = iterator.nextElementSibling;
             stack.append(iterator);
             iterator = next;
-        } 
+        }
         this.append(stack);
         return stack;
     }

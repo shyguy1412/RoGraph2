@@ -5,7 +5,7 @@ export class RoGraphScope extends RoGraphElement {
     static readonly connectionThreshold = 25;
 
     init(): void {
-        this.classList.add('rg-scope')
+        // this.classList.add('rg-scope')
     }
 
 }
