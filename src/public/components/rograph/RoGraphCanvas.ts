@@ -4,6 +4,7 @@ import { RoGraphStack } from './RoGraphStack';
 export class RoGraphCanvas extends RoGraphElement {
 
     init(): void {
+
         //event listeners for mouse interaction
         this.addEventListener('mousedown', (e) => {
 

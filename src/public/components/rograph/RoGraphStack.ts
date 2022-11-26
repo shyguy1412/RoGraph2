@@ -1,4 +1,5 @@
 import { dist } from '../../assets/functions';
+import { RoGraphBlock } from './blocks/RoGraphBlock';
 import { RoGraphWrapBlock } from './blocks/RoGraphWrapBlock';
 import { registerComponent } from './RoGraphElement';
 import { RoGraphScope } from './RoGraphScope';
@@ -39,12 +40,12 @@ export class RoGraphStack extends RoGraphScope {
             x: 0,
             y: 0
         }
-        
+
         const x = this.getAttribute('x') as number | null;
         const y = this.getAttribute('y') as number | null;
         this.x = x ?? this.x;
         this.y = y ?? this.y;
-      
+
         const observer = new MutationObserver((mutations: MutationRecord[]) => {
             const x = this.getAttribute('x') as number | null;
             const y = this.getAttribute('y') as number | null;
@@ -86,7 +87,6 @@ export class RoGraphStack extends RoGraphScope {
 
     resolveInsertions() {
         //TODO: Optimize
-
         const stackBounds = this.getBoundingClientRect();
 
         //get all scopes
@@ -96,13 +96,24 @@ export class RoGraphStack extends RoGraphScope {
         const contentSlots: RoGraphScope[] = [];
 
         this.canvas.querySelectorAll<RoGraphWrapBlock>('rg-wrapblock').forEach(block => {
-            
-            
-            contentSlots.push(...block.shadowRoot!.querySelectorAll<RoGraphScope>('rg-contentslot'))
+            contentSlots.push(...block.getContent());
         })
 
-        console.log(contentSlots);
-        
+        for (const slot of contentSlots){
+            const slotBounds = slot.getBoundingClientRect();
+
+            const distTopToBottom = dist(stackBounds.x, stackBounds.top, slotBounds.x, slotBounds.bottom);
+            const host = (slot.getRootNode() as ShadowRoot).host as RoGraphWrapBlock;
+            
+            //TODO: read slot index
+
+            if (distTopToBottom < RoGraphScope.connectionThreshold) {
+                const children = [...this.children] as RoGraphBlock[];
+                host.insertContent(0, children);
+                this.remove();
+                return;
+            }
+        }
 
         for (const scope of scopes) {
             const scopeBounds = scope.getBoundingClientRect();
@@ -145,7 +156,7 @@ export class RoGraphStack extends RoGraphScope {
         const canvas = document.querySelector("rg-canvas")!.getBoundingClientRect();
         this.offset.x = e.clientX - this.x - canvas.x;
         this.offset.y = e.clientY - this.y - canvas.y;
-        
+
         this.attached = true;
     }
 
