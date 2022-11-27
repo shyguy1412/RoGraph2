@@ -7,19 +7,22 @@ import { RoGraphBlock } from "./RoGraphBlock";
 
 
 export class RoGraphWrapBlock extends RoGraphBlock {
-   declare svg: WrapBlockSVG;
-
-    getContent():RoGraphScope[]{
-        const content:RoGraphScope[] = [];
-
+    declare svg: WrapBlockSVG;
+    
+    init(): void {
+    }
+ 
+    getContent(): RoGraphScope[] {
+        const content: RoGraphScope[] = [];
+        
         this.shadowRoot!.querySelectorAll<RoGraphScope>('rg-contentslot').forEach(slot => {
             content.push(slot);
         });
-
+        
         return content;
     }
-
-    insertContent(slotIndex:number, blocks:RoGraphBlock[]){
+    
+    insertContent(slotIndex: number, blocks: RoGraphBlock[]) {
         blocks.forEach(block => block.setAttribute('slot', 'slot' + slotIndex));
         this.append(...blocks);
     }
@@ -27,11 +30,11 @@ export class RoGraphWrapBlock extends RoGraphBlock {
     defineSlots(): RoGraphSlot[] {
         return [
             RoGraphContentSlot.create<RoGraphContentSlot>()
-            .for(this)
-            .at({
-                x: WrapBlockSVG.stem,
-                y: WrapBlockSVG.upperHeight
-            })
+                .for(this)
+                .at({
+                    x: WrapBlockSVG.stem,
+                    y: WrapBlockSVG.upperHeight
+                })
         ]
     }
 
@@ -40,7 +43,11 @@ export class RoGraphWrapBlock extends RoGraphBlock {
     }
 
     slotUpdate(slot: RoGraphSlot): void {
-        // this.svg.contentHeight = this.slots[0].getBoundingClientRect().height;
-        // this.svg.updateShape();
+        const height = [...this.querySelectorAll<RoGraphBlock>(':scope > *')]
+        .filter(el => el instanceof RoGraphBlock)
+        .reduce((value, block) => value += block.getBoundingClientRect().height, 0);
+
+        this.svg.contentHeight = height;
+        this.svg.updateShape();
     }
 }

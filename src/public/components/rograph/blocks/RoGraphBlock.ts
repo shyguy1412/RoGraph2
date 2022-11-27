@@ -30,10 +30,20 @@ export abstract class RoGraphBlock extends RoGraphElement {
         shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/rograph/${this.constructor.name}.css" />`;
         shadow.appendChild(this.svg);
         shadow.append(...slots);
-        slots.forEach((slot, index) => slot.innerHTML += /*html*/`<slot name='slot${index}'></slot>`)
+        slots.forEach((slot, index) => {
+            const slotEl = document.createElement('slot');
+            slotEl.setAttribute('name', 'slot' + index);
+            slotEl.addEventListener('slotchange', () => this.slotChangeHandler(slot));
+            slot.append(slotEl);
+        })
+
     }
 
-    init(): void {
+    private slotChangeHandler(slot:RoGraphSlot){
+        this.slotUpdate(slot);
+        try{
+            (this.parentElement as RoGraphBlock).slotUpdate(slot);
+        } catch(_){}
     }
 
     abstract defineSlots(): RoGraphSlot[];

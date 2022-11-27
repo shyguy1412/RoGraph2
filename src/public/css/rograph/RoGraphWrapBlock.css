@@ -3,7 +3,3 @@ rg-wrapblock {
     position: relative;
     line-height: 0;
 }
-
-rg-contentslot {
-    position: absolute;
-}

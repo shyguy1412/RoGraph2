@@ -6,4 +6,8 @@ export class RoGraphContentSlot extends RoGraphSlot {
         this.style.left = (this.pos?.x || 0) + 'px';
         this.style.top = (this.pos?.y || 0) + 'px';
     }
+
+    connectedCallback(): void {
+        this.style.position = 'absolute';    
+    }
 }
