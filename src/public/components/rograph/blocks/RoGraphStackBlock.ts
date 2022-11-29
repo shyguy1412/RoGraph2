@@ -6,7 +6,11 @@ import { RoGraphBlock} from './RoGraphBlock';
 
 export class RoGraphStackBlock extends RoGraphBlock {
     
-    slotUpdate(slot: RoGraphSlot): void {
+    init(): void {
+        
+    }
+
+    updateShape(): void {
     }
 
     defineSlots(): RoGraphSlot[] {
