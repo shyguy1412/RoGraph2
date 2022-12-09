@@ -5,6 +5,7 @@ import { RoGraphCanvas } from "./RoGraphCanvas";
 import { RoGraphContentSlot } from "./RoGraphContentSlot";
 import { RoGraphScope } from "./RoGraphScope";
 import { RoGraphStack } from "./RoGraphStack";
+import { RoGraphLabel } from "./RoGraphLabel";
 
 export default function(){
     registerComponent(RoGraphStackBlock);
@@ -13,4 +14,5 @@ export default function(){
     registerComponent(RoGraphContentSlot);
     registerComponent(RoGraphScope);
     registerComponent(RoGraphStack);
+    registerComponent(RoGraphLabel);
 }

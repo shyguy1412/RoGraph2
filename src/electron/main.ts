@@ -103,7 +103,7 @@ function createMenu(): Menu {
       submenu: [
          {
             label: i18n.t('Install Extension') + '...',
-            accelerator: 'f',
+            // accelerator: 'f',
             click: menuActionMap['installExtension']
          },
       ]

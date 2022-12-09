@@ -1,3 +1,4 @@
+import { RoGraphBlock } from './blocks/RoGraphBlock';
 import { registerComponent, RoGraphElement } from './RoGraphElement';
 import { RoGraphStack } from './RoGraphStack';
 
@@ -10,8 +11,7 @@ export class RoGraphCanvas extends RoGraphElement {
 
             if (e.button) return;
             //find clicked element
-            const target = e.composedPath().find(el => el instanceof RoGraphElement) as RoGraphElement;
-            if (target == this) return;
+            const target = e.composedPath().find(el => el instanceof RoGraphBlock) as RoGraphBlock;
             //if clicked element is the head of a stack, pick up the stack
             if (!target.previousElementSibling && target.parentElement instanceof RoGraphStack) {
                 target.parentElement.pickUp(e);

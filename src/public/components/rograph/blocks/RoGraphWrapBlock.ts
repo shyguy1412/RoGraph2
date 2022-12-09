@@ -10,6 +10,15 @@ export class RoGraphWrapBlock extends RoGraphBlock {
     declare svg: WrapBlockSVG;
 
     init(): void {
+        const slots = this.defineSlots();
+        this.shadowRoot!.append(...slots);
+        slots.forEach((slot, index) => {
+            const slotEl = document.createElement('slot');
+            slotEl.setAttribute('name', 'content' + index);
+            slotEl.addEventListener('slotchange', () => this.updateShape());
+            slot.append(slotEl);
+        })
+
     }
 
     getContent(): RoGraphScope[] {
@@ -22,8 +31,8 @@ export class RoGraphWrapBlock extends RoGraphBlock {
         return content;
     }
 
-    insertContent(slotIndex: number, blocks: RoGraphBlock[]) {
-        blocks.forEach(block => block.setAttribute('slot', 'slot' + slotIndex));
+    insertToSlot(slot: string, blocks: RoGraphBlock[]) {
+        blocks.forEach(block => block.setAttribute('slot', slot));
         this.append(...blocks);
     }
 

@@ -103,13 +103,15 @@ export class RoGraphStack extends RoGraphScope {
             const slotBounds = slot.getBoundingClientRect();
 
             const distTopToBottom = dist(stackBounds.x, stackBounds.top, slotBounds.x, slotBounds.bottom);
-            const host = (slot.getRootNode() as ShadowRoot).host as RoGraphWrapBlock;
+            const block = (slot.getRootNode() as ShadowRoot).host as RoGraphWrapBlock;
             
             //TODO: read slot index
 
             if (distTopToBottom < RoGraphScope.connectionThreshold) {
                 const children = [...this.children] as RoGraphBlock[];
-                host.insertContent(0, children);
+                const slotAttr = slot.children[0].getAttribute('name');
+                if(slotAttr == null)throw Error('Invalid Slot');
+                block.insertToSlot(slotAttr, children);
                 this.remove();
                 return;
             }

@@ -1,0 +1,9 @@
+rg-label {
+    position: absolute;
+    display: block;
+    width: max-content;
+    line-height: normal;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -42%);
+}

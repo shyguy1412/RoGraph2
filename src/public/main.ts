@@ -12,7 +12,7 @@ app.innerHTML = /*html*/`
     <rg-stack x=100 y=100>
         <rg-stackblock type="com.xisio.robat#action.1"></rg-stackblock>
         <rg-wrapblock type="net.nasram.rograph#logic.1">
-                <rg-wrapblock slot='slot0' type="net.nasram.rograph#logic.1">
+                <rg-wrapblock slot='content0' type="net.nasram.rograph#logic.1">
             </rg-wrapblock>
         </rg-wrapblock>
     </rg-stack>
