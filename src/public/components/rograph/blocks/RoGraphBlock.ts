@@ -10,9 +10,6 @@ export abstract class RoGraphBlock extends RoGraphElement {
         this.svg = this.defineSVG();
 
         const shadow = this.attachShadow({ mode: 'open' });
-        
-        shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/style.css" />`;
-        shadow.innerHTML += /*html*/`<link rel="stylesheet" href="css/rograph/${this.constructor.name}.css" />`;
         shadow.appendChild(this.svg);
         
         const resizeObserver = new ResizeObserver(() => {

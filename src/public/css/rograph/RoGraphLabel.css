@@ -1,4 +1,4 @@
-rg-label {
+*::part(label) {
     position: absolute;
     display: block;
     width: max-content;
