@@ -1,5 +1,5 @@
 import { RoGraphBlock } from './blocks/RoGraphBlock';
-import { registerComponent, RoGraphElement } from './RoGraphElement';
+import { RoGraphElement } from './RoGraphElement';
 import { RoGraphStack } from './RoGraphStack';
 
 export class RoGraphCanvas extends RoGraphElement {

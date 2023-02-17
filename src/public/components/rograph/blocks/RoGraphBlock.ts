@@ -1,6 +1,5 @@
 import { GeckoSVG } from "geckosvg";
 import { RoGraphElement } from "@rograph/RoGraphElement";
-import { RoGraphSlot } from "@rograph/RoGraphSlot";
 
 export abstract class RoGraphBlock extends RoGraphElement {
     svg!: GeckoSVG;

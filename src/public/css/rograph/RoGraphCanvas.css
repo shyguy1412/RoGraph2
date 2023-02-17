@@ -5,3 +5,7 @@ rg-canvas {
     height: 100%;
     background: var(--clr-canvas-bg);
 }
+
+rg-canvas, rg-canvas *{
+    user-select: none;
+}

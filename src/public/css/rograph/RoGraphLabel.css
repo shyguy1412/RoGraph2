@@ -1,7 +1,10 @@
 *::part(label) {
     position: absolute;
-    display: block;
-    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    /* width: max-content; */
     line-height: normal;
     top: 50%;
     left: 50%;

@@ -1,8 +1,10 @@
 import { dist } from '../../assets/functions';
 import { RoGraphBlock } from './blocks/RoGraphBlock';
 import { RoGraphWrapBlock } from './blocks/RoGraphWrapBlock';
+import { RoGraphContentSlot } from './RoGraphContentSlot';
 import { registerComponent } from './RoGraphElement';
 import { RoGraphScope } from './RoGraphScope';
+import { RoGraphSlot } from './RoGraphSlot';
 
 /**
  * A stack of RoGraph blocks. Manages movement and insertion of blocks into other stacks.
@@ -65,11 +67,10 @@ export class RoGraphStack extends RoGraphScope {
     //picks up a stack
     pickUp(e: MouseEvent) {
         this.attach(e);
-
         //stacks should be ordered by interaction
         const canvas = document.querySelector("rg-canvas") as HTMLElement;
 
-        if (canvas.lastChild != this)
+        if (canvas.lastElementChild != this)
             canvas.appendChild(this);
     }
 
@@ -99,48 +100,61 @@ export class RoGraphStack extends RoGraphScope {
             contentSlots.push(...block.getContent());
         })
 
-        for (const slot of contentSlots){
-            const slotBounds = slot.getBoundingClientRect();
-
-            const distTopToBottom = dist(stackBounds.x, stackBounds.top, slotBounds.x, slotBounds.bottom);
-            const block = (slot.getRootNode() as ShadowRoot).host as RoGraphWrapBlock;
-            
-            //TODO: read slot index
-
-            if (distTopToBottom < RoGraphScope.connectionThreshold) {
-                const children = [...this.children] as RoGraphBlock[];
-                const slotAttr = slot.children[0].getAttribute('name');
-                if(slotAttr == null)throw Error('Invalid Slot');
-                block.insertToSlot(slotAttr, children);
-                this.remove();
-                return;
-            }
+        for (const slot of contentSlots) {
+            if (this.resolveContentSlotInsertion(slot, stackBounds)) return;
         }
 
         for (const scope of scopes) {
-            const scopeBounds = scope.getBoundingClientRect();
-
-            const distTopToBottom = dist(stackBounds.x, stackBounds.top, scopeBounds.x, scopeBounds.bottom);
-            const distBottomToTop = dist(stackBounds.x, stackBounds.bottom, scopeBounds.x, scopeBounds.top);
-
-            if (distTopToBottom < RoGraphScope.connectionThreshold) {
-                const children = [...this.children];
-                scope.append(...children);
-                this.remove();
-                return;
-            }
-
-            if (distBottomToTop < RoGraphScope.connectionThreshold && scope instanceof RoGraphStack) {
-                const children = [...this.children];
-                scope.prepend(...children);
-                if (scope instanceof RoGraphStack) {
-                    scope.y -= stackBounds.height;
-                }
-                this.remove();
-                return;
-            }
-
+            if (this.resolveStackInsertion(scope, stackBounds)) return;
         }
+    }
+
+    resolveStackInsertion(scope: RoGraphScope, stackBounds: DOMRect): boolean {
+        const scopeBounds = scope.getBoundingClientRect();
+
+        const distTopToBottom = dist(stackBounds.x, stackBounds.top, scopeBounds.x, scopeBounds.bottom);
+        const distBottomToTop = dist(stackBounds.x, stackBounds.bottom, scopeBounds.x, scopeBounds.top);
+
+        if (distTopToBottom < RoGraphScope.connectionThreshold) {
+            const children = [...this.children];
+            scope.append(...children);
+            this.remove();
+            return true;
+        }
+
+        if (distBottomToTop < RoGraphScope.connectionThreshold && scope instanceof RoGraphStack) {
+            const children = [...this.children];
+            scope.prepend(...children);
+            if (scope instanceof RoGraphStack) {
+                scope.y -= stackBounds.height;
+            }
+            this.remove();
+            return true;
+        }
+        return false;
+    }
+
+    resolveContentSlotInsertion(slot: RoGraphScope, stackBounds: DOMRect): boolean {
+        const slotBounds = slot.getBoundingClientRect();
+
+        const distTopToBottom = dist(stackBounds.x, stackBounds.top, slotBounds.x, slotBounds.bottom);
+        const block = (slot.getRootNode() as ShadowRoot).host as RoGraphWrapBlock;
+
+        //TODO: read slot index
+
+        if (distTopToBottom < RoGraphScope.connectionThreshold) {
+            const children = [...this.children] as RoGraphBlock[];
+            const slotAttr = slot.children[0].getAttribute('name');
+            if (slotAttr == null) throw Error('Invalid Slot');
+            block.insertToSlot(slotAttr, children);
+            this.remove();
+            return true;
+        }
+        return false;
+    }
+
+    resolveValueSlotInsertion(slot: RoGraphScope, stackBounds: DOMRect): boolean {
+        return false;
     }
 
     followMouse(e: MouseEvent) {

@@ -1,11 +1,7 @@
-import { registerComponent, RoGraphElement } from './RoGraphElement';
+import { RoGraphElement } from './RoGraphElement';
 
-export class RoGraphScope extends RoGraphElement {
+export abstract class RoGraphScope extends RoGraphElement {
 
     static readonly connectionThreshold = 25;
-
-    init(): void {
-        // this.classList.add('rg-scope')
-    }
 
 }

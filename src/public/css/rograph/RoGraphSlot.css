@@ -1,3 +1,6 @@
-/* .rg-slot{
-    position: absolute;
-} */
+*::part(valueslot){
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+    background-color: rgba(54, 54, 54, 0.5);
+}
