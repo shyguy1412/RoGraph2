@@ -1,13 +1,10 @@
-import { RoGraphSlot } from "./RoGraphSlot";
+import { RoGraphScope } from "./RoGraphScope";
 
-export class RoGraphValueSlot extends RoGraphSlot {
+export class RoGraphValueSlot extends RoGraphScope {
 
     init(): void {
         this.setAttribute('part', 'valueslot');
         console.log('VALUE');
-    }
-
-    updateClientPosition() {
     }
 
 }

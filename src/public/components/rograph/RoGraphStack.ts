@@ -1,10 +1,7 @@
 import { dist } from '../../assets/functions';
 import { RoGraphBlock } from './blocks/RoGraphBlock';
 import { RoGraphWrapBlock } from './blocks/RoGraphWrapBlock';
-import { RoGraphContentSlot } from './RoGraphContentSlot';
-import { registerComponent } from './RoGraphElement';
 import { RoGraphScope } from './RoGraphScope';
-import { RoGraphSlot } from './RoGraphSlot';
 
 /**
  * A stack of RoGraph blocks. Manages movement and insertion of blocks into other stacks.

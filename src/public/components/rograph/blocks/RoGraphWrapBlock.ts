@@ -39,8 +39,8 @@ export class RoGraphWrapBlock extends RoGraphBlock {
     defineSlots(): RoGraphSlot[] {
         const slot = RoGraphContentSlot.create<RoGraphContentSlot>();
 
-        slot.pos.x = WrapBlockSVG.upperHeight;
-        slot.pos.y = WrapBlockSVG.stem;
+        slot.pos.x = WrapBlockSVG.stem;
+        slot.pos.y = WrapBlockSVG.upperHeight;
 
         return [
             slot
