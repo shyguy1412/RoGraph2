@@ -19,6 +19,9 @@ app.innerHTML = /*html*/`
     <rg-stack x=300 y=100>
         <rg-stackblock type="com.xisio.robat#action.1"></rg-stackblock>
     </rg-stack>
+    <rg-stack x=500 y=100>
+        <rg-valueblock type="com.xisio.robat#action.1"></rg-valueblock>
+    </rg-stack>
 </rg-canvas>
 `;
 
