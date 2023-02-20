@@ -11,7 +11,10 @@ export class RoGraphCanvas extends RoGraphElement {
 
             if (e.button) return;
             //find clicked element
-            const target = e.composedPath().find(el => el instanceof RoGraphBlock) as RoGraphBlock;
+            const target = (e.composedPath() as RoGraphBlock[]).find(el => el instanceof RoGraphBlock);
+
+            if(!target)return;
+
             //if clicked element is the head of a stack, pick up the stack
             if (!target.previousElementSibling && target.parentElement instanceof RoGraphStack) {
                 target.parentElement.pickUp(e);

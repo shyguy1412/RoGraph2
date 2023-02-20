@@ -1,6 +1,5 @@
 import { RoGraphContentSlot } from "@rograph/RoGraphContentSlot";
 import { RoGraphScope } from "@rograph/RoGraphScope";
-import { RoGraphSlot } from "@rograph/RoGraphSlot";
 import { WrapBlockSVG } from "@svg/WrapBlockSVG";
 import { GeckoSVG } from "geckosvg";
 import { RoGraphBlock } from "./RoGraphBlock";
@@ -10,7 +9,7 @@ export class RoGraphWrapBlock extends RoGraphBlock {
     declare svg: WrapBlockSVG;
 
     init(): void {
-        const slots = this.defineSlots();
+        const slots = this.defineContentSlots();
         this.shadowRoot!.append(...slots);
         slots.forEach((slot, index) => {
             const slotEl = document.createElement('slot');
@@ -36,7 +35,7 @@ export class RoGraphWrapBlock extends RoGraphBlock {
         this.append(...blocks);
     }
 
-    defineSlots(): RoGraphSlot[] {
+    defineContentSlots(): RoGraphContentSlot[] {
         const slot = RoGraphContentSlot.create<RoGraphContentSlot>();
 
         slot.pos.x = WrapBlockSVG.stem;
