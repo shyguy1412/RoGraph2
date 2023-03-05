@@ -1,8 +1,3 @@
-interface RoGraphElementConstructor {
-    readonly tag: string,
-    new(): RoGraphElement
-};
-
 export abstract class RoGraphElement extends HTMLElement {
     static get tag() {
         return this.name.toLowerCase().replace('rograph', 'rg-');
@@ -34,11 +29,11 @@ export abstract class RoGraphElement extends HTMLElement {
 
 }
 
-export function registerComponent(constructor: RoGraphElementConstructor) {
-    if (!(constructor.prototype instanceof RoGraphElement)) throw new Error(); //TODO: throw error
-    if (!window.customElements.get(constructor.tag)) {
-        window.customElements.define(constructor.tag, constructor);
-    } else {
-        console.warn(`[RoGraph] ${constructor.tag} is already defined`);
-    }
+export function registerComponent(constructor: typeof RoGraphElement & (new () => RoGraphElement)) {
+  if (!(constructor.prototype instanceof RoGraphElement)) throw new Error(); //TODO: throw error
+  if (!window.customElements.get(constructor.tag)) {
+    window.customElements.define(constructor.tag, constructor);
+  } else {
+    console.warn(`[RoGraph] ${constructor.tag} is already defined`);
+  }
 }
