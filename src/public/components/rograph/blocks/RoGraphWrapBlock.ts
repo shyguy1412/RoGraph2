@@ -3,9 +3,10 @@ import { RoGraphScope } from "@rograph/RoGraphScope";
 import { RoGraphSVG } from "@svg/RoGraphSVG";
 import { WrapBlockSVG } from "@svg/WrapBlockSVG";
 import { RoGraphBlock } from "./RoGraphBlock";
+import { RoGraphStackBlock } from "./RoGraphStackBlock";
 
 
-export class RoGraphWrapBlock extends RoGraphBlock {
+export class RoGraphWrapBlock extends RoGraphStackBlock {
   declare svg: WrapBlockSVG;
 
   init(): void {

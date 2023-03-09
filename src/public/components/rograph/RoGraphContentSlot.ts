@@ -50,12 +50,9 @@ export class RoGraphContentSlot extends RoGraphScope {
     this.slotEl.addEventListener('slotchange', () => this.parent.updateShape());
   }
 
-  // connectedCallback(): void {
-  //   this.style.position = 'absolute';
-  // }
-
   canAppend(scope: RoGraphScope): boolean {
-    for (const child of [...this.children, ...scope.children]) {
+    for (const child of [...this.parent.children, ...scope.children]) {
+      console.log(child, child instanceof RoGraphStackBlock);
       if(!(child instanceof RoGraphStackBlock))
         return false;
     }

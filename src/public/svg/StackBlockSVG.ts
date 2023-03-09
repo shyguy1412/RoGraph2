@@ -12,9 +12,6 @@ export class StackBlockSVG extends RoGraphSVG {
     static readonly strokeWidth = 3
     shape!: GeckoSVGPolygonElement;
 
-    labelWidth!:number;
-    labelHeight!:number;
-
     updateShape() {
 
         this.width = 20 + this.labelWidth;

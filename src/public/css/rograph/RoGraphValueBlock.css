@@ -1,0 +1,6 @@
+rg-valueblock {
+    display: block;
+    position: relative;
+    line-height: 0;
+    width: fit-content;
+}
