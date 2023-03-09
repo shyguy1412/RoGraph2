@@ -1,24 +1,41 @@
-import { GeckoSVG } from "geckosvg";
 import { RoGraphElement } from "@rograph/RoGraphElement";
+import { RoGraphLabel } from "@rograph/RoGraphLabel";
+import { RoGraphScope } from "@rograph/RoGraphScope";
+import { RoGraphSVG } from "@svg/RoGraphSVG";
 
 export abstract class RoGraphBlock extends RoGraphElement {
-    svg!: GeckoSVG;
+  svg!: RoGraphSVG;
+  label: RoGraphLabel;
 
-    constructor() {
-        super();
-        this.svg = this.defineSVG();
+  constructor() {
+    super();
+    this.svg = this.defineSVG();
+    this.label = RoGraphElement.create(RoGraphLabel);
 
-        const shadow = this.attachShadow({ mode: 'open' });
-        shadow.appendChild(this.svg);
-        
-        const resizeObserver = new ResizeObserver(() => {
-            try { (this.parentElement as RoGraphBlock).updateShape(); } catch (_) { }
-        });
-        resizeObserver.observe(this);
-    }
+    const shadow = this.attachShadow({ mode: 'open' });
+    shadow.appendChild(this.svg);
 
-    abstract defineSVG(): GeckoSVG;
+    const resizeObserver = new ResizeObserver(() => {
+      try { (this.parentElement as RoGraphBlock).updateShape(); } catch (_) { }
+    });
 
-    abstract updateShape(): void;
+    this.shadowRoot!.append(this.label);
+    resizeObserver.observe(this);
+  }
+
+  insertToSlot(slot: string, blocks: RoGraphBlock[]) {
+    blocks.forEach(block => block.setAttribute('slot', slot));
+    this.append(...blocks);
+  }
+
+  getScopes(): RoGraphScope[] {
+    const elements = [...this.shadowRoot!.querySelectorAll('*')];
+    return elements
+      .filter((el): el is RoGraphScope => el instanceof RoGraphScope);
+  }
+
+  abstract defineSVG(): RoGraphSVG;
+
+  abstract updateShape(label: RoGraphLabel | void): void;
 
 }

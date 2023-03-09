@@ -10,5 +10,6 @@ export abstract class RoGraphSVG extends GeckoSVG{
     }
 
     abstract draw():void;
+    abstract updateShape():void;
     
 }

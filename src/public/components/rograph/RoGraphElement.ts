@@ -1,31 +1,38 @@
 export abstract class RoGraphElement extends HTMLElement {
-    static get tag() {
-        return this.name.toLowerCase().replace('rograph', 'rg-');
-    }
-    private isInit = false;
+  static get tag() {
+    return this.name.toLowerCase().replace('rograph', 'rg-');
+  }
 
-    //runs when element is created with create()
-    constructor() {
-        super();
-    }
+  get parent(): RoGraphElement | null {
+    const rootNode = this.getRootNode() as ShadowRoot;
+    const host = rootNode.host ?? this.parentElement ?? null;
+    return host as RoGraphElement
+  }
 
-    connectedCallback() {
-        if(!this.isInit)this.init();
-        this.isInit = true;
-    }
+  private isInit = false;
 
-    //initilise component after creation
-    abstract init(): void;
+  //runs when element is created with create()
+  constructor() {
+    super();
+  }
 
-    //creates an instance of the element
-    static create<T extends RoGraphElement>(type?: new () => T): T {
-        const tag = type ? (type as unknown as typeof RoGraphElement).tag : this.tag
+  connectedCallback() {
+    if (!this.isInit) this.init();
+    this.isInit = true;
+  }
 
-        if (!window.customElements.get(tag)) throw new Error(`[RoGraph] ${tag} is not a registered component`)
+  //initilise component after creation
+  abstract init(): void;
 
-        const el = document.createElement(tag) as T;
-        return el;
-    }
+  //creates an instance of the element
+  static create<T extends RoGraphElement>(type?: new () => T): T {
+    const tag = type ? (type as unknown as typeof RoGraphElement).tag : this.tag
+
+    if (!window.customElements.get(tag)) throw new Error(`[RoGraph] ${tag} is not a registered component`)
+
+    const el = document.createElement(tag) as T;
+    return el;
+  }
 
 }
 

@@ -72,7 +72,7 @@ export class WrapBlockSVG extends RoGraphSVG {
             .fill(WrapBlockSVG.fill)
             .stroke(WrapBlockSVG.stroke)
             .strokeWidth(WrapBlockSVG.strokeWidth);;
-        this.text(num + '', 10, 25);
+        // this.text(num + '', 10, 25);
         this.contentHeight = 0;
         this.updateShape();
     }

@@ -14,6 +14,7 @@ export default defineConfig({
       "@rograph": resolve(__dirname, "src/public/components/rograph"),
       "@ui": resolve(__dirname, "src/public/components/ui"),
       "@svg": resolve(__dirname, "src/public/svg"),
+      "public": resolve(__dirname, "src/public"),
     }
   },
   esbuild: 

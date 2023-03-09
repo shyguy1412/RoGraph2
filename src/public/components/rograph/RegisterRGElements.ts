@@ -6,9 +6,11 @@ import { RoGraphContentSlot } from "./RoGraphContentSlot";
 import { RoGraphStack } from "./RoGraphStack";
 import { RoGraphLabel } from "./RoGraphLabel";
 import { RoGraphValueSlot } from "./RoGraphValueSlot";
+import { RoGraphValueBlock } from "./blocks/RoGraphValueBlock";
 
 export default function(){
     registerComponent(RoGraphStackBlock);
+    registerComponent(RoGraphValueBlock);
     registerComponent(RoGraphWrapBlock);
     registerComponent(RoGraphCanvas);
     registerComponent(RoGraphContentSlot);

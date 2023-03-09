@@ -1,6 +1,10 @@
-*::part(valueslot){
+*::part(value-slot){
     display: inline-block;
     width: 50px;
     height: 20px;
     background-color: rgba(54, 54, 54, 0.5);
+}
+
+*::part(content-slot){
+  position: absolute;
 }
