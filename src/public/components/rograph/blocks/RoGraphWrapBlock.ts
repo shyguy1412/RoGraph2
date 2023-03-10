@@ -44,12 +44,12 @@ export class RoGraphWrapBlock extends RoGraphStackBlock {
     return WrapBlockSVG.create();
   }
 
-  updateShape(): void {
-    const height = [...this.querySelectorAll<RoGraphBlock>(':scope > *')]
-      .filter(el => el instanceof RoGraphBlock)
-      .reduce((value, block) => value += block.getBoundingClientRect().height, 0);
+  // updateShape(): void {
+  //   const height = [...this.querySelectorAll<RoGraphBlock>(':scope > *')]
+  //     .filter(el => el instanceof RoGraphBlock)
+  //     .reduce((value, block) => value += block.getBoundingClientRect().height, 0);
 
-    this.svg.contentHeight = height;
-    this.svg.updateShape();
-  }
+  //   this.svg.contentHeight = height;
+  //   this.svg.updateShape();
+  // }
 }

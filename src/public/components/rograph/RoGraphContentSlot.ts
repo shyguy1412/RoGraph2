@@ -52,7 +52,7 @@ export class RoGraphContentSlot extends RoGraphScope {
 
   canAppend(scope: RoGraphScope): boolean {
     for (const child of [...this.parent.children, ...scope.children]) {
-      console.log(child, child instanceof RoGraphStackBlock);
+      // console.log(child, child instanceof RoGraphStackBlock);
       if(!(child instanceof RoGraphStackBlock))
         return false;
     }

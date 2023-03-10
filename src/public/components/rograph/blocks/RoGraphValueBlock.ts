@@ -7,14 +7,15 @@ export class RoGraphValueBlock extends RoGraphBlock {
 
   init(): void {
     this.returnType = 'test';
+    this.label.setAttribute('label-code', 'testvalue @test');
   }
 
   defineSVG(): RoGraphSVG {
     return ValueBlockSVG.create();
   }
 
-  updateShape(): void {
-    this.svg.updateShape();
-  }
+  // updateShape(): void {
+  //   this.svg.updateShape(this);
+  // }
 
 }

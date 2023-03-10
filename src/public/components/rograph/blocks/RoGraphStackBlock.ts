@@ -11,16 +11,12 @@ export class RoGraphStackBlock extends RoGraphBlock {
     this.label.setAttribute('label-code', '(\\@boolean) then @test abbabab');
   }
 
-  updateShape(label: RoGraphLabel | void): void {
-    if (!label) return;
-    // console.log(label);
+  // updateShape(label: RoGraphLabel | void): void {
+  //   if (!label) return;
+  //   // console.log(label);
 
-    const bounds = label.getBoundingClientRect();
-    this.svg.labelWidth = Math.round(bounds.width);
-    this.svg.labelHeight = Math.round(bounds.height);
-
-    this.svg.updateShape();
-  }
+  //   this.svg.updateShape();
+  // }
 
   defineSVG(): RoGraphSVG {
     return StackBlockSVG.create();

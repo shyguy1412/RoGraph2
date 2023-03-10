@@ -39,7 +39,7 @@ export class RoGraphValueSlot extends RoGraphScope {
     const selfType = this.getAttribute('type');
     const blockType = block.returnType;
 
-    console.log({selfType, blockType, block});
+    // console.log({selfType, blockType, block});
 
     if(!selfType || selfType != blockType) return false;
     

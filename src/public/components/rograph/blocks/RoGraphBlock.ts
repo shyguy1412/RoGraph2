@@ -36,6 +36,6 @@ export abstract class RoGraphBlock extends RoGraphElement {
 
   abstract defineSVG(): RoGraphSVG;
 
-  abstract updateShape(label: RoGraphLabel | void): void;
+  updateShape(label: RoGraphLabel | void) { this.svg.updateShape(this) };
 
 }
